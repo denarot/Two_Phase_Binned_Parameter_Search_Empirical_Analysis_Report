@@ -839,24 +839,6 @@ if __name__ == "__main__":
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         fn(seeds=seed_list)
-        for method in ['random', 'bayesian', 'two_phase']:
-            success = sum(1 for r in results[method][dataset_name] if abs(r['k_hat'] - grid_k) <= 10) / 10 * 100
-            results[method][dataset_name + '_success_rate'] = success
-
-    # Save
-    with open('results/primary_comparison.json', 'w') as f:
-        json.dump(results, f, indent=2)
-
-    # Print summary
-    print("Primary Comparison Results:")
-    for dataset in get_dataset_names():
-        print(f"  {dataset}:")
-        for method in methods:
-            evals = np.mean([r['evaluations'] for r in results[method][dataset]])
-            time_ = np.mean([r['time'] for r in results[method][dataset]])
-            print(f"    {method}: {evals:.1f} evals, {time_:.1f} sec")
-
-    return results
 
 
 def run_scaling_validation() -> Dict[str, Any]:
