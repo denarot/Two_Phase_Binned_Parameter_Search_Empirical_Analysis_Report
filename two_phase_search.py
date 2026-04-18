@@ -32,7 +32,6 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 import numpy as np
-from sklearn.base import clone
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 
@@ -110,53 +109,53 @@ class _WarmStartOracle:
             n_splits=cv_folds, shuffle=True, random_state=random_state
         )
         self._splits = list(self.splitter.split(X, y))
-        # Warm-start cache: largest forest fitted on the full training set
+        # Warm-start cache: one fitted forest per CV fold, for the largest k seen.
+        # Storing per-fold forests ensures each cached forest was trained on its
+        # fold's training data, preserving the CV invariant on downward steps.
         self._cached_k: int = 0
-        self._cached_forest: Optional[RandomForestClassifier] = None
+        self._cached_forests: Optional[List[RandomForestClassifier]] = None
 
     def evaluate(self, k: int) -> tuple[float, bool]:
         """
         Return (mean CV accuracy, warm_started).
 
-        If k ≤ _cached_k, reuse the cached forest by temporarily swapping
-        estimators_ to the first k trees, scoring, then restoring the cache.
-        Otherwise, fit a fresh k-tree forest, cache it, and score normally.
+        If k ≤ _cached_k, reuse each fold's cached forest by temporarily
+        swapping its estimators_ to the first k trees, scoring, then restoring.
+        Otherwise, fit a fresh k-tree forest per fold, cache them, and score.
         """
         warm_started = False
 
-        if self._cached_forest is not None and k <= self._cached_k:
-            # Downward step: subset the cached forest
+        if self._cached_forests is not None and k <= self._cached_k:
+            # Downward step: subset each fold's own cached forest.
             warm_started = True
-            full_estimators = self._cached_forest.estimators_
             scores = []
-            for train_idx, val_idx in self._splits:
-                # Build a lightweight clone with only the first k trees
-                subset = clone(self._cached_forest)
-                subset.n_estimators = k
-                subset.fit(self.X[train_idx], self.y[train_idx])
-                # Replace with the first k trees from the cached full-data forest
-                # (valid because trees are i.i.d. conditional on training data)
-                subset.estimators_ = full_estimators[:k]
-                subset.n_estimators = k
-                scores.append(subset.score(self.X[val_idx], self.y[val_idx]))
+            for i, (_, val_idx) in enumerate(self._splits):
+                cached = self._cached_forests[i]
+                orig_estimators = cached.estimators_
+                orig_n = cached.n_estimators
+                cached.estimators_ = orig_estimators[:k]
+                cached.n_estimators = k
+                scores.append(cached.score(self.X[val_idx], self.y[val_idx]))
+                cached.estimators_ = orig_estimators
+                cached.n_estimators = orig_n
             return float(np.mean(scores)), warm_started
 
-        # Upward step or first evaluation: fit fresh, update cache
-        clf = RandomForestClassifier(
-            n_estimators=k,
-            random_state=self.random_state,
-            n_jobs=-1,
-        )
+        # Upward step or first evaluation: fit one forest per fold, cache if larger.
+        new_forests = []
         scores = []
         for train_idx, val_idx in self._splits:
+            clf = RandomForestClassifier(
+                n_estimators=k,
+                random_state=self.random_state,
+                n_jobs=-1,
+            )
             clf.fit(self.X[train_idx], self.y[train_idx])
             scores.append(clf.score(self.X[val_idx], self.y[val_idx]))
+            new_forests.append(clf)
 
-        # Cache the last-fitted forest (trained on the last fold's train split —
-        # adequate for warm-start subsetting since tree structure is what matters)
         if k > self._cached_k:
             self._cached_k = k
-            self._cached_forest = clf
+            self._cached_forests = new_forests
 
         return float(np.mean(scores)), warm_started
 
@@ -205,6 +204,7 @@ def two_phase_search(
     window_size: int = 5,
     cv_folds: int = 5,
     random_state: int = 42,
+    oracle: Optional[callable] = None,
 ) -> SearchResult:
     """
     Two-Phase Search for Optimal Random Forest Tree Count (Algorithm 1).
@@ -242,7 +242,15 @@ def two_phase_search(
     assert k_min < k_max,    "k_min must be strictly less than k_max"
     assert epsilon > 0,      "epsilon must be strictly positive"
 
-    oracle = _WarmStartOracle(X, y, cv_folds=cv_folds, random_state=random_state)
+    if oracle is None:
+        oracle_obj = _WarmStartOracle(X, y, cv_folds=cv_folds, random_state=random_state)
+        def evaluate(k):
+            return oracle_obj.evaluate(k)
+    else:
+        def evaluate(k):
+            acc = oracle(k)
+            return acc, False
+
     trajectory: List[EvalRecord] = []
     acc_sequence: List[float] = []   # ordered accuracy values for gradient computation
     step = 0
@@ -252,7 +260,7 @@ def two_phase_search(
         """Evaluate oracle, append EvalRecord, return accuracy."""
         nonlocal step
         step += 1
-        acc, warm = oracle.evaluate(k)
+        acc, warm = evaluate(k)
         elapsed = time.perf_counter() - start_time
         grad = windowed_gradient(acc_sequence, window_size)
         trajectory.append(EvalRecord(
@@ -338,40 +346,278 @@ def two_phase_search(
 
 
 # ---------------------------------------------------------------------------
+# Algorithm 1 (Reverse Variant): Two-Phase Search from k_max downward
+# ---------------------------------------------------------------------------
+
+def two_phase_search_reverse(
+    X,
+    y,
+    k_min: int = 10,
+    k_max: int = 1000,
+    epsilon: float = 1e-3,
+    window_size: int = 5,
+    cv_folds: int = 5,
+    random_state: int = 42,
+    oracle: Optional[callable] = None,
+) -> SearchResult:
+    """
+    Reverse Two-Phase Search: exponential halving from k_max, then binary
+    refinement.  Symmetric diagnostic counterpart to Algorithm 1.
+
+    Used in Section 7.6 (Table 5) to validate that the forward and reverse
+    searches converge to the same k*.  This is a diagnostic, not a proposed
+    replacement for Algorithm 1 — the forward version is preferred because
+    it warms up on small, cheap forests before hitting the expensive
+    large-k evaluations.
+
+    Phase 1 — Reverse Exponential Halving
+    --------------------------------------
+    Start at k_max and evaluate k_i = k_max // 2^i for i = 0, 1, 2, …
+
+    Traversal direction:  k_max → k_max/2 → k_max/4 → … → k_min
+    Accuracy profile:     high (plateau region) → dropping (pre-plateau)
+
+    Plateau-exit detection:  while halving we are *inside* the plateau.
+    We exit the plateau (enter the still-rising region) when the windowed
+    gradient becomes *negative* — accuracy is falling as we go lower.
+    Formally: G̅_w < −ε  (using the same Assumption 2 threshold, negated).
+
+    When exit is detected at step i:
+      L = k_i      (lower — accuracy still rising here)
+      U = k_{i-1}  (upper — last point still in plateau)
+
+    If no exit is detected (plateau extends all the way to k_min):
+      L, U = k_min, k_max  (full-range fallback, as in the forward version)
+
+    Phase 2 — Binary Refinement
+    ----------------------------
+    Binary search on [L, U] using G̅_w < −ε to decide which half contains
+    the plateau onset: negative gradient at k_mid means k_mid is below the
+    onset, so narrow from below (L = k_mid); otherwise narrow from above
+    (U = k_mid).  Returns k_hat = U (the lowest k still in the plateau).
+
+    Parameters
+    ----------
+    X : array-like of shape (n_samples, n_features)
+    y : array-like of shape (n_samples,)
+    k_min : int, default 10
+    k_max : int, default 1000
+    epsilon : float, default 1e-3
+        Plateau detection threshold ε (Assumption 2, negated for exit).
+    window_size : int, default 5  (≥ 3)
+    cv_folds : int, default 5
+    random_state : int, default 42
+    oracle : callable or None
+        Optional injectable oracle f(k) → float, same as two_phase_search.
+
+    Returns
+    -------
+    SearchResult
+        Same structure as two_phase_search().  EvalRecord.phase values:
+          1 = Phase 1 (reverse exponential halving)
+          2 = Phase 2 (binary refinement)
+
+    Convergence criterion (Table 5)
+    --------------------------------
+    |k_forward − k_reverse| / max(k_forward, k_reverse) < 0.10
+    """
+    assert window_size >= 3, "Assumption 2 requires window_size ≥ 3"
+    assert k_min < k_max,    "k_min must be strictly less than k_max"
+    assert epsilon > 0,      "epsilon must be strictly positive"
+
+    if oracle is None:
+        oracle_obj = _WarmStartOracle(X, y, cv_folds=cv_folds, random_state=random_state)
+        def evaluate(k):
+            return oracle_obj.evaluate(k)
+    else:
+        def evaluate(k):
+            acc = oracle(k)
+            return acc, False
+
+    trajectory: List[EvalRecord] = []
+    acc_sequence: List[float] = []   # ordered accuracy values for gradient computation
+    step = 0
+    start_time = time.perf_counter()
+
+    def _eval(k: int, phase: int) -> float:
+        """Evaluate oracle, append EvalRecord, return accuracy."""
+        nonlocal step
+        k = max(k_min, min(k, k_max))   # defensive clamp — prevents out-of-range halving
+        step += 1
+        acc, warm = evaluate(k)
+        elapsed = time.perf_counter() - start_time
+        grad = windowed_gradient(acc_sequence, window_size)
+        trajectory.append(EvalRecord(
+            step=step,
+            phase=phase,
+            k=k,
+            accuracy=acc,
+            wall_clock_seconds=elapsed,
+            gradient=grad,
+            warm_started=warm,
+        ))
+        return acc
+
+    # ------------------------------------------------------------------
+    # Phase 1: Reverse Exponential Bracketing
+    # Start at k_max, halve downward: k_i = floor(k_max / 2^i)
+    # Detect when negative gradient exceeds ε (plateau onset from above)
+    # ------------------------------------------------------------------
+    k_current = k_max
+    acc = _eval(k_current, phase=1)
+    acc_sequence.append(acc)
+
+    L, U = k_min, k_max
+    plateau_found = False
+    max_halvings = math.ceil(math.log2(k_max / k_min)) + 1
+
+    for i in range(max_halvings):
+        k_next = max(k_min, k_max // (2 ** (i + 1)))
+
+        acc_next = _eval(k_next, phase=1)
+        acc_sequence.append(acc_next)
+
+        g = windowed_gradient(acc_sequence, window_size)
+        trajectory[-1].gradient = g   # backfill now that window may be full
+
+        if g is not None and g < -epsilon:  # negative gradient exceeds threshold
+            L, U = k_next, k_current     # bracket the plateau onset
+            plateau_found = True
+            break
+
+        k_current = k_next
+        if k_next == k_min:
+            break   # hit ceiling without plateau — fallthrough to Phase 2 on full range
+
+    if not plateau_found:
+        L, U = k_min, k_max
+
+    phase1_evaluations = step
+
+    # ------------------------------------------------------------------
+    # Phase 2: Binary Refinement on discrete domain [L, U]
+    # Uses the same negative-gradient criterion as Phase 1: g < -epsilon
+    # means k_mid is below the plateau onset, so narrow from below (L=k_mid).
+    # ------------------------------------------------------------------
+    while U - L > 1:
+        k_mid = (L + U) // 2
+        acc_mid = _eval(k_mid, phase=2)
+        acc_sequence.append(acc_mid)
+
+        g = windowed_gradient(acc_sequence, window_size)
+        trajectory[-1].gradient = g
+
+        if g is not None and g < -epsilon:
+            L = k_mid   # still below plateau onset → narrow from below
+        else:
+            U = k_mid   # in plateau or above → narrow from above
+
+    k_hat = U
+    best_accuracy = next(
+        r.accuracy for r in reversed(trajectory) if r.k == k_hat
+    )
+    total_wall_clock_seconds = time.perf_counter() - start_time
+
+    return SearchResult(
+        k_hat=k_hat,
+        best_accuracy=best_accuracy,
+        total_evaluations=step,
+        phase1_evaluations=phase1_evaluations,
+        phase2_evaluations=step - phase1_evaluations,
+        bracket_L=L,
+        bracket_U=U,
+        trajectory=trajectory,
+        total_wall_clock_seconds=total_wall_clock_seconds,
+    )
+
+
+# ---------------------------------------------------------------------------
 # Verification test (spec-required: Iris, k_min=10, k_max=200)
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     from sklearn.datasets import load_iris
 
-    print("=" * 60)
-    print("Verification test: Iris dataset, k_min=10, k_max=200")
-    print("=" * 60)
+    K_MIN, K_MAX = 10, 200
+    CONVERGENCE_TOL = 0.10  # Table 5 criterion: relative difference < 10 %
 
     data = load_iris()
-    result = two_phase_search(data.data, data.target, k_min=10, k_max=200)
 
-    # --- Spec assertions ---
-    assert 10 <= result.k_hat <= 200,          f"k_hat={result.k_hat} out of [10, 200]"
-    assert result.total_evaluations < 20,       f"total_evaluations={result.total_evaluations} ≥ 20"
-    assert len(result.trajectory) > 0,          "trajectory is empty"
-    assert result.best_accuracy > 0,            "best_accuracy is zero"
+    # ------------------------------------------------------------------
+    # Forward search
+    # ------------------------------------------------------------------
+    print("=" * 60)
+    print("Forward Two-Phase Search: Iris, k_min=10, k_max=200")
+    print("=" * 60)
 
-    print(f"\n✓ k̂  (ε-optimal tree count) : {result.k_hat}  [must be 10–200]")
-    print(f"✓ best_accuracy             : {result.best_accuracy:.4f}")
-    print(f"✓ total_evaluations         : {result.total_evaluations}  [must be < 20]")
-    print(f"  phase1_evaluations        : {result.phase1_evaluations}")
-    print(f"  phase2_evaluations        : {result.phase2_evaluations}")
-    print(f"  bracket [L, U]            : [{result.bracket_L}, {result.bracket_U}]")
-    print(f"✓ trajectory length         : {len(result.trajectory)}  [must be > 0]")
-    print(f"  total_wall_clock_seconds  : {result.total_wall_clock_seconds:.2f}s")
+    fwd = two_phase_search(data.data, data.target, k_min=K_MIN, k_max=K_MAX)
+
+    assert K_MIN <= fwd.k_hat <= K_MAX,        f"fwd k_hat={fwd.k_hat} out of [{K_MIN},{K_MAX}]"
+    assert fwd.total_evaluations < 20,          f"fwd total_evaluations={fwd.total_evaluations} ≥ 20"
+    assert len(fwd.trajectory) > 0,             "fwd trajectory is empty"
+    assert fwd.best_accuracy > 0,               "fwd best_accuracy is zero"
+
+    print(f"\n✓ k̂  (forward)              : {fwd.k_hat}  [must be {K_MIN}–{K_MAX}]")
+    print(f"✓ best_accuracy             : {fwd.best_accuracy:.4f}")
+    print(f"✓ total_evaluations         : {fwd.total_evaluations}  [must be < 20]")
+    print(f"  phase1 / phase2           : {fwd.phase1_evaluations} / {fwd.phase2_evaluations}")
+    print(f"  bracket [L, U]            : [{fwd.bracket_L}, {fwd.bracket_U}]")
+    print(f"  wall_clock_seconds        : {fwd.total_wall_clock_seconds:.2f}s")
 
     print(f"\n{'step':>4}  {'ph':>2}  {'k':>4}  {'accuracy':>9}  {'gradient':>11}  {'warm':>5}  {'time(s)':>7}")
     print("-" * 58)
-    for r in result.trajectory:
+    for r in fwd.trajectory:
         g = f"{r.gradient:+.6f}" if r.gradient is not None else "        N/A"
         w = "yes" if r.warm_started else "no"
         print(f"{r.step:>4}  {r.phase:>2}  {r.k:>4}  {r.accuracy:>9.6f}  {g:>11}  {w:>5}  {r.wall_clock_seconds:>7.2f}")
+
+    # ------------------------------------------------------------------
+    # Reverse search
+    # ------------------------------------------------------------------
+    print("\n" + "=" * 60)
+    print("Reverse Two-Phase Search: Iris, k_min=10, k_max=200")
+    print("=" * 60)
+
+    rev = two_phase_search_reverse(data.data, data.target, k_min=K_MIN, k_max=K_MAX)
+
+    assert K_MIN <= rev.k_hat <= K_MAX,        f"rev k_hat={rev.k_hat} out of [{K_MIN},{K_MAX}]"
+    assert rev.total_evaluations < 20,          f"rev total_evaluations={rev.total_evaluations} ≥ 20"
+    assert len(rev.trajectory) > 0,             "rev trajectory is empty"
+    assert rev.best_accuracy > 0,               "rev best_accuracy is zero"
+
+    print(f"\n✓ k̂  (reverse)             : {rev.k_hat}  [must be {K_MIN}–{K_MAX}]")
+    print(f"✓ best_accuracy             : {rev.best_accuracy:.4f}")
+    print(f"✓ total_evaluations         : {rev.total_evaluations}  [must be < 20]")
+    print(f"  phase1 / phase2           : {rev.phase1_evaluations} / {rev.phase2_evaluations}")
+    print(f"  bracket [L, U]            : [{rev.bracket_L}, {rev.bracket_U}]")
+    print(f"  wall_clock_seconds        : {rev.total_wall_clock_seconds:.2f}s")
+
+    print(f"\n{'step':>4}  {'ph':>2}  {'k':>4}  {'accuracy':>9}  {'gradient':>11}  {'warm':>5}  {'time(s)':>7}")
+    print("-" * 58)
+    for r in rev.trajectory:
+        g = f"{r.gradient:+.6f}" if r.gradient is not None else "        N/A"
+        w = "yes" if r.warm_started else "no"
+        print(f"{r.step:>4}  {r.phase:>2}  {r.k:>4}  {r.accuracy:>9.6f}  {g:>11}  {w:>5}  {r.wall_clock_seconds:>7.2f}")
+
+    # ------------------------------------------------------------------
+    # Bidirectional convergence check (Table 5 criterion)
+    # ------------------------------------------------------------------
+    print("\n" + "=" * 60)
+    print("Bidirectional convergence (Table 5)")
+    print("=" * 60)
+
+    rel_diff = abs(fwd.k_hat - rev.k_hat) / max(fwd.k_hat, rev.k_hat)
+    converged = rel_diff < CONVERGENCE_TOL
+
+    print(f"  forward  k̂ : {fwd.k_hat}")
+    print(f"  reverse  k̂ : {rev.k_hat}")
+    print(f"  |Δk| / max  : {rel_diff:.4f}  [must be < {CONVERGENCE_TOL}]")
+    print(f"  converged   : {'YES ✓' if converged else 'NO ✗'}")
+
+    assert converged, (
+        f"Bidirectional convergence failed: fwd={fwd.k_hat}, rev={rev.k_hat}, "
+        f"rel_diff={rel_diff:.4f} ≥ {CONVERGENCE_TOL}"
+    )
 
     print("\nAll assertions passed.")
 

@@ -1,0 +1,28 @@
+# Two-Phase Search — Python dependencies
+#
+# Install: pip install -r requirements.txt
+#
+# Minimum versions match the Implementation Guide prerequisites
+# (Python 3.8+, scikit-learn 1.2.0+). Upper bounds prevent future
+# breaking-change surprises. Exact versions used in the paper run are
+# recorded in results/master.json hardware metadata (written by
+# run_experiments.py).
+#
+# Note: scikit-optimize is NOT required. The Bayesian baseline uses a
+# pure scikit-learn GP-UCB implementation (GaussianProcessRegressor +
+# Matern kernel) with no external BO library dependency.
+
+# Core ML and numerics
+scikit-learn>=1.2.0,<2.0.0
+numpy>=1.24.0,<3.0.0
+scipy>=1.10.0,<2.0.0
+
+# Visualisation
+matplotlib>=3.7.0,<4.0.0
+
+# Serialisation / parallelism (implicit sklearn dep; also used directly)
+joblib>=1.2.0,<2.0.0
+
+# Tested with:
+#   scikit-learn==1.8.0  numpy==2.4.3  scipy==1.17.1
+#   matplotlib==3.10.8   joblib==1.5.3   Python 3.10+
