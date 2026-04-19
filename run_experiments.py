@@ -221,7 +221,7 @@ def run_monotonicity_validation(seeds: Optional[List[int]] = None) -> dict:
              widths=[14, 12, 14, 8])
 
     path = _save("monotonicity", results)
-    print(f"\n  Saved → {path}")
+    print(f"\n  Saved -> {path}")
     return results
 
 
@@ -347,7 +347,7 @@ def run_primary_comparison(seeds: Optional[List[int]] = None) -> dict:
                  widths=[12, 12, 16, 9, 7, 9, 10])
 
     path = _save("primary_comparison", results)
-    print(f"\n  Saved → {path}")
+    print(f"\n  Saved -> {path}")
     return results
 
 
@@ -360,7 +360,7 @@ def run_scaling_validation(seeds: Optional[List[int]] = None) -> dict:
     Run Two-Phase Search with varying k_max on Covertype.
 
     Validates that evaluation count scales as O(log N) (Theorem 4).
-    Records empirical count vs. theoretical prediction ⌈log₂(k_max/k_min)⌉·2 + 1.
+    Records empirical count vs. theoretical prediction ⌈log₂(k_max/k_min)⌉-2 + 1.
 
     Output: results/scaling.json
     """
@@ -371,7 +371,7 @@ def run_scaling_validation(seeds: Optional[List[int]] = None) -> dict:
     results: dict = {}
 
     for k_max in SCALING_KMAXES:
-        # Theorem 4 prediction: 2·⌈log₂(k_max/k_min)⌉ + 1
+        # Theorem 4 prediction: 2-⌈log₂(k_max/k_min)⌉ + 1
         theory_bound = 2 * math.ceil(math.log2(k_max / K_MIN)) + 1
         runs = []
 
@@ -410,7 +410,7 @@ def run_scaling_validation(seeds: Optional[List[int]] = None) -> dict:
              r["within_bound"], widths=[8, 15, 10, 16, 14])
 
     path = _save("scaling", results)
-    print(f"\n  Saved → {path}")
+    print(f"\n  Saved -> {path}")
     return results
 
 
@@ -503,7 +503,7 @@ def run_noise_robustness(seeds: Optional[List[int]] = None) -> dict:
              widths=[8, 16, 14, 12])
 
     path = _save("noise_robustness", results)
-    print(f"\n  Saved → {path}")
+    print(f"\n  Saved -> {path}")
     return results
 
 
@@ -573,7 +573,7 @@ def run_bidirectional_validation(seeds: Optional[List[int]] = None) -> dict:
              widths=[14, 12, 12, 16])
 
     path = _save("bidirectional_validation", results)
-    print(f"\n  Saved → {path}")
+    print(f"\n  Saved -> {path}")
     return results
 
 
@@ -644,7 +644,7 @@ def run_edge_deployment(seeds: Optional[List[int]] = None) -> dict:
                 print(f"  {ds_name}  seed={seed}  {label:10s}  "
                       f"k={k:5d}  {size_mb:.2f}MB  "
                       f"{inf_ms:.3f}ms  acc={test_acc:.4f}  "
-                      f"budget={'✓' if within_budget else '✗'}")
+                      f"budget={'OK' if within_budget else 'FAIL'}")
 
             ds_results["runs"].append(seed_row)
 
@@ -666,7 +666,7 @@ def run_edge_deployment(seeds: Optional[List[int]] = None) -> dict:
         results[ds_name] = ds_results
 
     _header("Table 6 — Edge Deployment Summary")
-    _row("Dataset", "Method", "Size (MB)", "Inf (ms)", "Acc", "Budget ✓%",
+    _row("Dataset", "Method", "Size (MB)", "Inf (ms)", "Acc", "Budget OK%",
          widths=[12, 12, 12, 10, 8, 10])
     for ds, ds_r in results.items():
         for label in ["grid", "two_phase", "default"]:
@@ -679,7 +679,7 @@ def run_edge_deployment(seeds: Optional[List[int]] = None) -> dict:
                  widths=[12, 12, 12, 10, 8, 10])
 
     path = _save("edge_deployment", results)
-    print(f"\n  Saved → {path}")
+    print(f"\n  Saved -> {path}")
     return results
 
 
@@ -762,7 +762,7 @@ def run_window_ablation(seeds: Optional[List[int]] = None) -> dict:
              widths=[5, 12, 14, 16])
 
     path = _save("window_ablation", results)
-    print(f"\n  Saved → {path}")
+    print(f"\n  Saved -> {path}")
     return results
 
 
@@ -786,7 +786,7 @@ def run_all(seeds: Optional[List[int]] = None) -> dict:
     }
 
     path = _save("master", master)
-    print(f"\n  Master results saved → {path}")
+    print(f"\n  Master results saved -> {path}")
     return master
 
 
@@ -1003,7 +1003,7 @@ def run_edge_deployment() -> Dict[str, Any]:
     for dataset, configs in results.items():
         print(f"  {dataset}:")
         for name, res in configs.items():
-            print(f"    {name}: {res['memory_mb']:.2f} MB, {res['inference_ms']:.2f} ms, budget={'✓' if res['budget_ok'] else '✗'}")
+            print(f"    {name}: {res['memory_mb']:.2f} MB, {res['inference_ms']:.2f} ms, budget={'OK' if res['budget_ok'] else 'FAIL'}")
 
     return results
 

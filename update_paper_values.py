@@ -14,7 +14,7 @@ Usage
 
 Output format
 -------------
-  OLD  (projected)  →  NEW  (empirical)  [FLAG if headline-level change]
+  OLD  (projected)  ->  NEW  (empirical)  [FLAG if headline-level change]
 
 Exit code
 ---------
@@ -73,11 +73,11 @@ PROJECTED = {
     },
     # Table 3 — scaling
     "t3": {
-        90:   {"predicted": "6.5+3.2→10", "actual": "9.8±1.2",  "matches": True},
-        190:  {"predicted": "7.6+4.2→12", "actual": "11.5±1.4", "matches": True},
-        490:  {"predicted": "8.9+5.6→15", "actual": "14.2±1.8", "matches": True},
-        990:  {"predicted": "10.0+6.6→17","actual": "16.3±2.1", "matches": True},
-        1990: {"predicted": "11.0+7.6→19","actual": "18.1±2.3", "matches": True},
+        90:   {"predicted": "6.5+3.2->10", "actual": "9.8±1.2",  "matches": True},
+        190:  {"predicted": "7.6+4.2->12", "actual": "11.5±1.4", "matches": True},
+        490:  {"predicted": "8.9+5.6->15", "actual": "14.2±1.8", "matches": True},
+        990:  {"predicted": "10.0+6.6->17","actual": "16.3±2.1", "matches": True},
+        1990: {"predicted": "11.0+7.6->19","actual": "18.1±2.3", "matches": True},
     },
     # Table 4 — noise
     "t4": {
@@ -240,7 +240,7 @@ def print_table1(data: dict) -> None:
         flag_spd = ""
         if abs(agg_spd - proj_agg["speedup"]) > HEADLINE_SPEEDUP_TOLERANCE:
             flag_spd = _alert(
-                f"Table 1 aggregate speedup: {proj_agg['speedup']:.1f}× → {agg_spd:.1f}× "
+                f"Table 1 aggregate speedup: {proj_agg['speedup']:.1f}× -> {agg_spd:.1f}× "
                 f"(Δ={agg_spd - proj_agg['speedup']:+.1f}×). "
                 "Update abstract, Section 2.3, Section 2.5, and Section 9."
             )
@@ -248,7 +248,7 @@ def print_table1(data: dict) -> None:
         flag_suc = ""
         if abs(agg_suc - proj_agg["success_pct"] / 100) > HEADLINE_SUCCESS_TOLERANCE:
             flag_suc = _alert(
-                f"Table 1 aggregate success rate: {proj_agg['success_pct']}% → {agg_suc*100:.0f}% "
+                f"Table 1 aggregate success rate: {proj_agg['success_pct']}% -> {agg_suc*100:.0f}% "
                 f"(Δ={agg_suc*100 - proj_agg['success_pct']:+.0f} pp). "
                 "Update abstract and Section 2.5."
             )
@@ -348,7 +348,7 @@ def print_table3() -> None:
             continue
         emp = data[key]
         ev_new      = _ms(emp["evaluations_mean"], emp["evaluations_std"], 1)
-        matches_new = "✓ Yes" if emp["within_bound"] else "✗ No"
+        matches_new = "OK Yes" if emp["within_bound"] else "FAIL No"
         _row(f"N={n_val} — actual evals",   proj["actual"],         ev_new)
         _row(f"N={n_val} — within theory?", str(proj["matches"]),   matches_new)
 
@@ -402,12 +402,12 @@ def print_table5() -> None:
         fwd_new  = _ms(np.mean(fwd_ks),    np.std(fwd_ks),    0)
         rev_new  = _ms(np.mean(rev_ks),    np.std(rev_ks),    0)
         rel_new  = f"{np.mean(rel_diffs)*100:.1f}%"
-        conv_new = "✓ Yes" if np.mean(rel_diffs) < 0.10 else "✗ No (>10%)"
+        conv_new = "OK Yes" if np.mean(rel_diffs) < 0.10 else "FAIL No (>10%)"
 
         _row(f"{ds} — k_forward",  str(proj["k_fwd"]),             fwd_new)
         _row(f"{ds} — k_reverse",  str(proj["k_rev"]),             rev_new)
         _row(f"{ds} — rel. diff",  f"{proj['rel_diff_pct']:.1f}%", rel_new)
-        _row(f"{ds} — converged?", "✓ Yes",                        conv_new)
+        _row(f"{ds} — converged?", "OK Yes",                        conv_new)
         print()
 
 
@@ -443,7 +443,7 @@ def print_table6() -> None:
             mem_new = _ms(emp["size_mb_mean"], emp["size_mb_std"], 2)
             inf_new = f"{emp['inference_ms_mean']:.3f}"
             bud_emp = emp["budget_compliance_rate"] == 1.0
-            bud_new = "Yes ✓" if bud_emp else "No"
+            bud_new = "Yes OK" if bud_emp else "No"
 
             flag_bud = ""
             if bud_emp != proj["fits_4mb"]:
@@ -456,7 +456,7 @@ def print_table6() -> None:
 
             _row(f"{lbl} — memory (MB)",    f"{proj['mem_mb']:.1f}",  mem_new)
             _row(f"{lbl} — inference (ms)", f"{proj['inf_ms']:.3f}",  inf_new)
-            _row(f"{lbl} — fits 4MB?",      "Yes ✓" if proj["fits_4mb"] else "No", bud_new, flag_bud)
+            _row(f"{lbl} — fits 4MB?",      "Yes OK" if proj["fits_4mb"] else "No", bud_new, flag_bud)
         print()
 
 
@@ -526,43 +526,43 @@ def print_location_guide() -> None:
 
   ABSTRACT (Section 1)
   ─────────────────────
-  · "7–15× speedup over grid search"
-      → Update range to match actual min/max speedup across datasets (Table 1).
-  · "within 0.01 accuracy of the grid search optimum in over 95% of runs"
-      → Update threshold/percentage to match aggregate success rate (Table 1 agg.).
-  · "predicts a 7–15× speedup" → change "predicts" to measured past-tense verb.
+  - "7–15× speedup over grid search"
+      -> Update range to match actual min/max speedup across datasets (Table 1).
+  - "within 0.01 accuracy of the grid search optimum in over 95% of runs"
+      -> Update threshold/percentage to match aggregate success rate (Table 1 agg.).
+  - "predicts a 7–15× speedup" -> change "predicts" to measured past-tense verb.
 
   SECTION 2.3 (AutoML pipelines bullet)
   ──────────────────────────────────────
-  · "The projected 7.6× speedup on Covertype"
-      → Replace 7.6× with actual Covertype speedup from Table 1.
-  · "Two-Phase Search requires approximately 13"
-      → Replace 13 with actual mean evaluation count for Covertype.
+  - "The projected 7.6× speedup on Covertype"
+      -> Replace 7.6× with actual Covertype speedup from Table 1.
+  - "Two-Phase Search requires approximately 13"
+      -> Replace 13 with actual mean evaluation count for Covertype.
 
   SECTION 2.5 (Two Audiences)
   ────────────────────────────
-  · Any reference to specific speedup multiples or success percentages.
+  - Any reference to specific speedup multiples or success percentages.
 
   SECTION 7 INTRO
   ────────────────
-  · "Hardware specifications will be reported in the final submission."
-      → Replace with actual CPU model and RAM.
-  · Remove "Note on numerical values" disclaimer block (top of Section 7).
-  · Remove all per-table "(projected values, pending empirical validation)" captions.
+  - "Hardware specifications will be reported in the final submission."
+      -> Replace with actual CPU model and RAM.
+  - Remove "Note on numerical values" disclaimer block (top of Section 7).
+  - Remove all per-table "(projected values, pending empirical validation)" captions.
 
   SECTION 7.7 (Edge Deployment narrative)
   ────────────────────────────────────────
-  · "Two-Phase k-hat fits 4 MB flash budget on 2/3 datasets; default 500 trees fails all three"
-      → Update 2/3 fraction based on Table 6 budget compliance.
+  - "Two-Phase k-hat fits 4 MB flash budget on 2/3 datasets; default 500 trees fails all three"
+      -> Update 2/3 fraction based on Table 6 budget compliance.
 
   SECTION 9 (Conclusion)
   ───────────────────────
-  · Any "predicts" / "projected" language → past-tense empirical claims.
-  · Update aggregate speedup and success rate numbers.
+  - Any "predicts" / "projected" language -> past-tense empirical claims.
+  - Update aggregate speedup and success rate numbers.
 
   APPENDIX B (Revision checklist)
   ─────────────────────────────────
-  · Mark empirical items as resolved once experiments are complete.
+  - Mark empirical items as resolved once experiments are complete.
     """)
 
 

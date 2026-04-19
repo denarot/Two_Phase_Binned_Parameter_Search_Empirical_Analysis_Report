@@ -35,6 +35,9 @@
 
 set -euo pipefail
 
+# Force UTF-8 output on Windows terminals (prevents UnicodeEncodeError on → ✓ etc.)
+export PYTHONUTF8=1
+
 # ---------------------------------------------------------------------------
 # Defaults
 # ---------------------------------------------------------------------------

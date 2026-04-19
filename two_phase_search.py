@@ -61,7 +61,7 @@ class SearchResult:
     The trajectory list contains one EvalRecord per evaluation in evaluation order,
     covering both Phase 1 and Phase 2.
     """
-    k_hat: int                          # Returned ε-optimal tree count
+    k_hat: int                          # Returned epsilon-optimal tree count
     best_accuracy: float                # f̃(k_hat) — accuracy at the returned k
     total_evaluations: int              # phase1_evaluations + phase2_evaluations
     phase1_evaluations: int             # Evaluations used in Phase 1
@@ -209,7 +209,7 @@ def two_phase_search(
     """
     Two-Phase Search for Optimal Random Forest Tree Count (Algorithm 1).
 
-    Finds k̂ such that f(k*) − f(k̂) ≤ ε in O(log N) evaluations, matching
+    Finds k_hat such that f(k*) − f(k_hat) ≤ epsilon in O(log N) evaluations, matching
     the information-theoretic lower bound (Theorem 7).
 
     Parameters
@@ -223,7 +223,7 @@ def two_phase_search(
     k_max : int, default 1000
         Upper bound of the tree-count search space.
     epsilon : float, default 1e-3
-        Plateau detection threshold ε (Assumption 2).
+        Plateau detection threshold epsilon (Assumption 2).
     window_size : int, default 5
         Window size w for gradient averaging (≥ 3, Assumption 2).
     cv_folds : int, default 5
@@ -322,9 +322,9 @@ def two_phase_search(
         trajectory[-1].gradient = g
 
         if g is not None and g < epsilon:
-            U = k_mid   # plateau or past it → narrow from above
+            U = k_mid   # plateau or past it -> narrow from above
         else:
-            L = k_mid   # not yet plateau → narrow from below
+            L = k_mid   # not yet plateau -> narrow from below
 
     k_hat = L
     best_accuracy = next(
@@ -374,13 +374,13 @@ def two_phase_search_reverse(
     --------------------------------------
     Start at k_max and evaluate k_i = k_max // 2^i for i = 0, 1, 2, …
 
-    Traversal direction:  k_max → k_max/2 → k_max/4 → … → k_min
-    Accuracy profile:     high (plateau region) → dropping (pre-plateau)
+    Traversal direction:  k_max -> k_max/2 -> k_max/4 -> … -> k_min
+    Accuracy profile:     high (plateau region) -> dropping (pre-plateau)
 
     Plateau-exit detection:  while halving we are *inside* the plateau.
     We exit the plateau (enter the still-rising region) when the windowed
     gradient becomes *negative* — accuracy is falling as we go lower.
-    Formally: G̅_w < −ε  (using the same Assumption 2 threshold, negated).
+    Formally: G̅_w < −epsilon  (using the same Assumption 2 threshold, negated).
 
     When exit is detected at step i:
       L = k_i      (lower — accuracy still rising here)
@@ -391,7 +391,7 @@ def two_phase_search_reverse(
 
     Phase 2 — Binary Refinement
     ----------------------------
-    Binary search on [L, U] using G̅_w < −ε to decide which half contains
+    Binary search on [L, U] using G̅_w < −epsilon to decide which half contains
     the plateau onset: negative gradient at k_mid means k_mid is below the
     onset, so narrow from below (L = k_mid); otherwise narrow from above
     (U = k_mid).  Returns k_hat = U (the lowest k still in the plateau).
@@ -403,12 +403,12 @@ def two_phase_search_reverse(
     k_min : int, default 10
     k_max : int, default 1000
     epsilon : float, default 1e-3
-        Plateau detection threshold ε (Assumption 2, negated for exit).
+        Plateau detection threshold epsilon (Assumption 2, negated for exit).
     window_size : int, default 5  (≥ 3)
     cv_folds : int, default 5
     random_state : int, default 42
     oracle : callable or None
-        Optional injectable oracle f(k) → float, same as two_phase_search.
+        Optional injectable oracle f(k) -> float, same as two_phase_search.
 
     Returns
     -------
@@ -461,7 +461,7 @@ def two_phase_search_reverse(
     # ------------------------------------------------------------------
     # Phase 1: Reverse Exponential Bracketing
     # Start at k_max, halve downward: k_i = floor(k_max / 2^i)
-    # Detect when negative gradient exceeds ε (plateau onset from above)
+    # Detect when negative gradient exceeds epsilon (plateau onset from above)
     # ------------------------------------------------------------------
     k_current = k_max
     acc = _eval(k_current, phase=1)
@@ -508,9 +508,9 @@ def two_phase_search_reverse(
         trajectory[-1].gradient = g
 
         if g is not None and g < -epsilon:
-            L = k_mid   # still below plateau onset → narrow from below
+            L = k_mid   # still below plateau onset -> narrow from below
         else:
-            U = k_mid   # in plateau or above → narrow from above
+            U = k_mid   # in plateau or above -> narrow from above
 
     k_hat = U
     best_accuracy = next(
@@ -557,9 +557,9 @@ if __name__ == "__main__":
     assert len(fwd.trajectory) > 0,             "fwd trajectory is empty"
     assert fwd.best_accuracy > 0,               "fwd best_accuracy is zero"
 
-    print(f"\n✓ k̂  (forward)              : {fwd.k_hat}  [must be {K_MIN}–{K_MAX}]")
-    print(f"✓ best_accuracy             : {fwd.best_accuracy:.4f}")
-    print(f"✓ total_evaluations         : {fwd.total_evaluations}  [must be < 20]")
+    print(f"\nOK k_hat  (forward)              : {fwd.k_hat}  [must be {K_MIN}–{K_MAX}]")
+    print(f"OK best_accuracy             : {fwd.best_accuracy:.4f}")
+    print(f"OK total_evaluations         : {fwd.total_evaluations}  [must be < 20]")
     print(f"  phase1 / phase2           : {fwd.phase1_evaluations} / {fwd.phase2_evaluations}")
     print(f"  bracket [L, U]            : [{fwd.bracket_L}, {fwd.bracket_U}]")
     print(f"  wall_clock_seconds        : {fwd.total_wall_clock_seconds:.2f}s")
@@ -585,9 +585,9 @@ if __name__ == "__main__":
     assert len(rev.trajectory) > 0,             "rev trajectory is empty"
     assert rev.best_accuracy > 0,               "rev best_accuracy is zero"
 
-    print(f"\n✓ k̂  (reverse)             : {rev.k_hat}  [must be {K_MIN}–{K_MAX}]")
-    print(f"✓ best_accuracy             : {rev.best_accuracy:.4f}")
-    print(f"✓ total_evaluations         : {rev.total_evaluations}  [must be < 20]")
+    print(f"\nOK k_hat  (reverse)             : {rev.k_hat}  [must be {K_MIN}–{K_MAX}]")
+    print(f"OK best_accuracy             : {rev.best_accuracy:.4f}")
+    print(f"OK total_evaluations         : {rev.total_evaluations}  [must be < 20]")
     print(f"  phase1 / phase2           : {rev.phase1_evaluations} / {rev.phase2_evaluations}")
     print(f"  bracket [L, U]            : [{rev.bracket_L}, {rev.bracket_U}]")
     print(f"  wall_clock_seconds        : {rev.total_wall_clock_seconds:.2f}s")
@@ -609,10 +609,10 @@ if __name__ == "__main__":
     rel_diff = abs(fwd.k_hat - rev.k_hat) / max(fwd.k_hat, rev.k_hat)
     converged = rel_diff < CONVERGENCE_TOL
 
-    print(f"  forward  k̂ : {fwd.k_hat}")
-    print(f"  reverse  k̂ : {rev.k_hat}")
+    print(f"  forward  k_hat : {fwd.k_hat}")
+    print(f"  reverse  k_hat : {rev.k_hat}")
     print(f"  |Δk| / max  : {rel_diff:.4f}  [must be < {CONVERGENCE_TOL}]")
-    print(f"  converged   : {'YES ✓' if converged else 'NO ✗'}")
+    print(f"  converged   : {'YES OK' if converged else 'NO FAIL'}")
 
     assert converged, (
         f"Bidirectional convergence failed: fwd={fwd.k_hat}, rev={rev.k_hat}, "

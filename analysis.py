@@ -246,7 +246,7 @@ def print_table1(data: dict) -> None:
                 all_tp_speedups.append(speedup)
                 all_tp_success.append(m["success_rate"])
 
-        _sep("·")
+        _sep("-")
 
     _subheader("Aggregate (Two-Phase Search)")
     if all_tp_evals:
@@ -295,7 +295,7 @@ def print_table2(data: dict) -> None:
 
         _col("Comparison", "Metric", "t-stat", "p-value", "Sig.", "Cohen's d",
              "Effect size", widths=W)
-        _sep("·")
+        _sep("-")
 
         grid_ks = _extract_per_seed(data, ds, "grid", "k_hat")
 
@@ -326,12 +326,12 @@ def print_table2(data: dict) -> None:
                     _effect_label(d),
                     widths=W,
                 )
-            _sep("·")
+            _sep("-")
 
     _subheader("Cross-dataset aggregate (all seeds pooled)")
     _col("Comparison", "Metric", "t-stat", "p-value", "Sig.", "Cohen's d",
          "Effect size", widths=W)
-    _sep("·")
+    _sep("-")
 
     available_ds = [ds for ds in DATASETS if ds in data]
     if not available_ds:
@@ -375,7 +375,7 @@ def print_table2(data: dict) -> None:
                 _effect_label(d),
                 widths=W,
             )
-        _sep("·")
+        _sep("-")
 
 
 # ---------------------------------------------------------------------------
@@ -438,10 +438,10 @@ def print_appendix_a(data: dict) -> None:
             _col(
                 ds if run == runs[0] else "",
                 seed, k_hat,
-                f"{p1} ≤{p1_bound}  {'✓' if p1_ok else '✗'}",
-                f"{p2} ≤{p2_bound}  {'✓' if p2_ok else '✗'}",
+                f"{p1} ≤{p1_bound}  {'OK' if p1_ok else 'FAIL'}",
+                f"{p2} ≤{p2_bound}  {'OK' if p2_ok else 'FAIL'}",
                 p1_bound, p2_bound,
-                "✓" if both_ok else "✗",
+                "OK" if both_ok else "FAIL",
                 widths=W,
             )
 
@@ -451,7 +451,7 @@ def print_appendix_a(data: dict) -> None:
             p2_within_all.append(p2_ok)
             total_within_all.append(both_ok)
 
-        _sep("·")
+        _sep("-")
         _col(
             f"{ds} MEAN", "—",
             f"{tp['k_hat_mean']:.0f} ±{tp['k_hat_std']:.0f}",
@@ -479,7 +479,7 @@ def print_appendix_a(data: dict) -> None:
         _subheader("Aggregate across all datasets")
         _col("Dataset", "", "k̂", "Phase1", "Phase2",
              "P1 ok%", "P2 ok%", "Both ok%", widths=W)
-        _sep("·")
+        _sep("-")
         for row in summary_rows:
             _col(
                 row["dataset"], "", "—",
@@ -490,7 +490,7 @@ def print_appendix_a(data: dict) -> None:
                 f"{row['total_compliance']*100:.0f}%",
                 widths=W,
             )
-        _sep("·")
+        _sep("-")
         _col(
             "OVERALL", "", "—",
             _fmt_ms(np.mean([r["p1_mean"] for r in summary_rows]),
@@ -529,7 +529,7 @@ def print_data_inventory() -> None:
     ]
     for name, desc in experiments:
         path = os.path.join(RESULTS_DIR, f"{name}.json")
-        status = "✓ present" if os.path.exists(path) else "✗ missing"
+        status = "OK present" if os.path.exists(path) else "FAIL missing"
         size = f"  ({os.path.getsize(path):,} bytes)" if os.path.exists(path) else ""
         print(f"  {status}  {name}.json{size}")
         print(f"           {desc}")

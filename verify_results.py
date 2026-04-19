@@ -128,7 +128,7 @@ def check_monotonicity(verbose: bool) -> CheckResult:
             drop = mean_curve[i] - mean_curve[i + 1]
             if drop > MONO_TOLERANCE:
                 violations.append(
-                    f"k={k_values[i]}→{k_values[i+1]}: "
+                    f"k={k_values[i]}->{k_values[i+1]}: "
                     f"acc dropped {drop:.5f} > tolerance {MONO_TOLERANCE}"
                 )
         if violations:
@@ -141,7 +141,7 @@ def check_monotonicity(verbose: bool) -> CheckResult:
                 default=0.0,
             )
             result.details.append(
-                f"[{ds_name}] mean curve non-decreasing ✓  "
+                f"[{ds_name}] mean curve non-decreasing OK  "
                 f"(max drop = {max_drop:.5f})"
             )
 
@@ -154,7 +154,7 @@ def check_monotonicity(verbose: bool) -> CheckResult:
             )
         elif verbose:
             result.details.append(
-                f"[{ds_name}] plateau variation {plateau_var:.5f} < {MONO_TOLERANCE} ✓"
+                f"[{ds_name}] plateau variation {plateau_var:.5f} < {MONO_TOLERANCE} OK"
             )
 
         # (c) Paper's stored flag agrees
@@ -178,7 +178,7 @@ def check_evaluation_count(verbose: bool) -> CheckResult:
         result.skip_reason = "primary_comparison.json not found"
         return result
 
-    # Theorem 4: T_total ≤ 2·⌈log₂(N)⌉ + 1 where N = K_MAX − K_MIN.
+    # Theorem 4: T_total ≤ 2-⌈log₂(N)⌉ + 1 where N = K_MAX − K_MIN.
     # Add 1 margin for window-filling evaluations Theorem 4 doesn't count.
     n = K_MAX_DEFAULT - K_MIN_DEFAULT
     bound = 2 * math.ceil(math.log2(max(n, 2))) + 2
@@ -196,7 +196,7 @@ def check_evaluation_count(verbose: bool) -> CheckResult:
             elif verbose:
                 result.details.append(
                     f"[{ds_name} seed={run['seed']}] "
-                    f"evals={actual} ≤ bound={bound} ✓"
+                    f"evals={actual} ≤ bound={bound} OK"
                 )
 
     return result
@@ -247,7 +247,7 @@ def check_phase_counts(verbose: bool) -> CheckResult:
             if verbose and ok_p1 and ok_p2:
                 result.details.append(
                     f"[{ds_name} seed={seed}] "
-                    f"P1={p1}≤{p1_bound} ✓  P2={p2}≤{p2_bound} ✓"
+                    f"P1={p1}≤{p1_bound} OK  P2={p2}≤{p2_bound} OK"
                 )
 
     return result
@@ -295,7 +295,7 @@ def check_accuracy_preservation(verbose: bool) -> CheckResult:
             elif verbose:
                 result.details.append(
                     f"[{ds_name} seed={seed}] "
-                    f"|Δacc| = {gap:.5f} < {ACC_TOLERANCE} ✓"
+                    f"|Δacc| = {gap:.5f} < {ACC_TOLERANCE} OK"
                 )
 
         if gaps:
@@ -344,7 +344,7 @@ def check_bidirectional(verbose: bool) -> CheckResult:
             if verbose:
                 result.details.append(
                     f"[{ds_name}] mean rel_diff={mean_rel:.4f}  "
-                    f"max={max_rel:.4f} < {BIDIR_THRESHOLD} ✓"
+                    f"max={max_rel:.4f} < {BIDIR_THRESHOLD} OK"
                 )
 
         # Sanity: stored rel_diff_mean matches computed value
@@ -390,8 +390,8 @@ def check_budget_compliance(verbose: bool) -> CheckResult:
                 elif verbose:
                     result.details.append(
                         f"[{ds_name} seed={seed} config={config}] "
-                        f"size={size_mb:.3f}MB → "
-                        f"{'fits' if flag else 'exceeds'} 4MB ✓"
+                        f"size={size_mb:.3f}MB -> "
+                        f"{'fits' if flag else 'exceeds'} 4MB OK"
                     )
 
         # Aggregate compliance_rate consistency
@@ -420,7 +420,7 @@ def check_budget_compliance(verbose: bool) -> CheckResult:
                 )
             elif verbose:
                 result.details.append(
-                    f"[{ds_name} {config}] compliance_rate={computed_rate:.2f} ✓"
+                    f"[{ds_name} {config}] compliance_rate={computed_rate:.2f} OK"
                 )
 
     return result
@@ -465,7 +465,7 @@ def check_success_rate(verbose: bool) -> CheckResult:
         elif verbose:
             result.details.append(
                 f"[{ds_name}] success_rate={computed_rate:.4f} "
-                f"(stored={stored_rate:.4f}) ✓  "
+                f"(stored={stored_rate:.4f}) OK  "
                 f"successes={sum(successes)}/{len(successes)}"
             )
 
@@ -503,14 +503,14 @@ def _print_result(r: CheckResult, verbose: bool) -> None:
         print(f"  Reason: {r.skip_reason}")
 
     for line in r.failures:
-        print(f"    {RED}✗{RESET} {line}")
+        print(f"    {RED}FAIL{RESET} {line}")
 
     for line in r.warnings:
-        print(f"    {YELLOW}⚠{RESET} {line}")
+        print(f"    {YELLOW}WARN{RESET} {line}")
 
     if verbose:
         for line in r.details:
-            print(f"    {CYAN}·{RESET} {line}")
+            print(f"    {CYAN}-{RESET} {line}")
 
 
 # ---------------------------------------------------------------------------
@@ -547,7 +547,7 @@ def run_checks(check_ids: Optional[List[int]], verbose: bool) -> int:
         path = os.path.join(RESULTS_DIR, f"{f}.json")
         if os.path.exists(path):
             size = os.path.getsize(path)
-            print(f"    {GREEN}✓{RESET}  {f}.json  ({size:,} bytes)")
+            print(f"    {GREEN}OK{RESET}  {f}.json  ({size:,} bytes)")
         else:
             print(f"    {YELLOW}─{RESET}  {f}.json  (not yet available)")
     print()
@@ -588,13 +588,13 @@ def run_checks(check_ids: Optional[List[int]], verbose: bool) -> int:
     print()
 
     if failed:
-        print(f"{RED}{BOLD}  ✗  {len(failed)} CHECK(S) FAILED — do not update the paper.{RESET}")
+        print(f"{RED}{BOLD}  FAIL  {len(failed)} CHECK(S) FAILED — do not update the paper.{RESET}")
         print()
         print("  Failed checks and what to do:")
         for r in failed:
             print(f"    Check {r.check_id}: {r.name}")
             for line in r.failures[:3]:
-                print(f"      · {line}")
+                print(f"      - {line}")
             if len(r.failures) > 3:
                 print(f"      … and {len(r.failures)-3} more (run --verbose for details)")
         print()
@@ -624,7 +624,7 @@ def run_checks(check_ids: Optional[List[int]], verbose: bool) -> int:
         _hsep()
         return 0
     else:
-        print(f"{GREEN}{BOLD}  ✓  ALL CHECKS PASSED.{RESET}")
+        print(f"{GREEN}{BOLD}  OK  ALL CHECKS PASSED.{RESET}")
         if skipped:
             print(f"     ({len(skipped)} skipped — those experiments haven't run yet)")
         print("  Results appear internally consistent. Proceed to update_paper_values.py.")

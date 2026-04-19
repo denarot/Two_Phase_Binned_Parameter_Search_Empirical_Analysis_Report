@@ -140,7 +140,7 @@ def _save_fig(fig: plt.Figure, name: str) -> None:
     for ext in ("pdf", "png"):
         path = os.path.join(FIGURES_DIR, f"{name}.{ext}")
         fig.savefig(path)
-        print(f"  Saved → {path}")
+        print(f"  Saved -> {path}")
 
 
 def _placeholder(name: str, message: str, n_panels: int = 3) -> None:
@@ -256,7 +256,7 @@ def figure1_convergence() -> None:
     Three subplots (one per dataset), showing the seed-42 Two-Phase trajectory.
 
     - Phase 1 points in sky blue, Phase 2 in red
-    - Vertical dashed line at Phase 1 → Phase 2 transition
+    - Vertical dashed line at Phase 1 -> Phase 2 transition
     - Horizontal dashed line at grid search optimum accuracy (seed 42)
     - Connected evaluation path in light grey
     """
@@ -309,7 +309,7 @@ def figure1_convergence() -> None:
                        linewidth=0.9, zorder=2)
             ax.text(transition_x + 0.05,
                     min(accs) + (max(accs) - min(accs)) * 0.05,
-                    "P1→P2", fontsize=6.5, color="#555555", va="bottom")
+                    "P1->P2", fontsize=6.5, color="#555555", va="bottom")
 
         ax.axhline(grid_opt_acc, color=C["ref"], linestyle=":", linewidth=1.0,
                    zorder=1, label=f"Grid opt. ({grid_opt_acc:.3f})")
@@ -442,7 +442,7 @@ def figure3_logscaling() -> None:
     """
     Single log-log plot.
 
-    1. Theorem 4 bound: 2·⌈log₂(N)⌉ + 1  (solid black)
+    1. Theorem 4 bound: 2-⌈log₂(N)⌉ + 1  (solid black)
     2. Empirical mean ± std from scaling.json (green points + error bars)
     3. Grid search reference: N/10 evaluations (dashed grey)
 
@@ -454,7 +454,7 @@ def figure3_logscaling() -> None:
     # N values corresponding to SCALING_KMAXES = [100, 200, 500, 1000, 2000], K_MIN=10
     default_ns = [90, 190, 490, 990, 1990]
     N_theory  = np.array(default_ns, dtype=float)
-    # Theorem 4: 2·⌈log₂(N)⌉ + 1
+    # Theorem 4: 2-⌈log₂(N)⌉ + 1
     theory_evals = np.array(
         [2 * math.ceil(math.log2(n)) + 1 for n in N_theory], dtype=float
     )
