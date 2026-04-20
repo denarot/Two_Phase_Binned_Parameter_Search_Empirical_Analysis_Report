@@ -1,0 +1,98 @@
+{
+  "0.0": {
+    "sigma": 0.0,
+    "runs": [
+      {
+        "seed": 42,
+        "sigma": 0.0,
+        "k_hat": 505,
+        "total_evaluations": 17,
+        "success": false
+      },
+      {
+        "seed": 43,
+        "sigma": 0.0,
+        "k_hat": 752,
+        "total_evaluations": 17,
+        "success": false
+      }
+    ],
+    "k_hat_mean": 628.5,
+    "k_hat_std": 123.5,
+    "success_rate": 0.0,
+    "evaluations_mean": 17.0,
+    "evaluations_std": 0.0
+  },
+  "0.01": {
+    "sigma": 0.01,
+    "runs": [
+      {
+        "seed": 42,
+        "sigma": 0.01,
+        "k_hat": 195,
+        "total_evaluations": 17,
+        "success": false
+      },
+      {
+        "seed": 43,
+        "sigma": 0.01,
+        "k_hat": 953,
+        "total_evaluations": 18,
+        "success": false
+      }
+    ],
+    "k_hat_mean": 574.0,
+    "k_hat_std": 379.0,
+    "success_rate": 0.0,
+    "evaluations_mean": 17.5,
+    "evaluations_std": 0.5
+  },
+  "0.02": {
+    "sigma": 0.02,
+    "runs": [
+      {
+        "seed": 42,
+        "sigma": 0.02,
+        "k_hat": 195,
+        "total_evaluations": 17,
+        "success": false
+      },
+      {
+        "seed": 43,
+        "sigma": 0.02,
+        "k_hat": 953,
+        "total_evaluations": 18,
+        "success": false
+      }
+    ],
+    "k_hat_mean": 574.0,
+    "k_hat_std": 379.0,
+    "success_rate": 0.0,
+    "evaluations_mean": 17.5,
+    "evaluations_std": 0.5
+  },
+  "0.05": {
+    "sigma": 0.05,
+    "runs": [
+      {
+        "seed": 42,
+        "sigma": 0.05,
+        "k_hat": 195,
+        "total_evaluations": 17,
+        "success": false
+      },
+      {
+        "seed": 43,
+        "sigma": 0.05,
+        "k_hat": 953,
+        "total_evaluations": 18,
+        "success": false
+      }
+    ],
+    "k_hat_mean": 574.0,
+    "k_hat_std": 379.0,
+    "success_rate": 0.0,
+    "evaluations_mean": 17.5,
+    "evaluations_std": 0.5
+  }
+}

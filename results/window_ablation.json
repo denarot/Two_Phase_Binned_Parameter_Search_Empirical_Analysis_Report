@@ -1,0 +1,101 @@
+{
+  "3": {
+    "window_size": 3,
+    "runs": [
+      {
+        "seed": 42,
+        "window_size": 3,
+        "k_hat": 10,
+        "bracket_L": 10,
+        "bracket_U": 11,
+        "total_evaluations": 17,
+        "phase1_evaluations": 8,
+        "phase2_evaluations": 9,
+        "success": false,
+        "false_positive": true
+      },
+      {
+        "seed": 43,
+        "window_size": 3,
+        "k_hat": 10,
+        "bracket_L": 10,
+        "bracket_U": 11,
+        "total_evaluations": 17,
+        "phase1_evaluations": 8,
+        "phase2_evaluations": 9,
+        "success": false,
+        "false_positive": true
+      }
+    ],
+    "evaluations_mean": 17.0,
+    "evaluations_std": 0.0,
+    "success_rate": 0.0,
+    "false_positive_rate": 1.0
+  },
+  "5": {
+    "window_size": 5,
+    "runs": [
+      {
+        "seed": 42,
+        "window_size": 5,
+        "k_hat": 505,
+        "bracket_L": 505,
+        "bracket_U": 506,
+        "total_evaluations": 17,
+        "phase1_evaluations": 8,
+        "phase2_evaluations": 9,
+        "success": false,
+        "false_positive": true
+      },
+      {
+        "seed": 43,
+        "window_size": 5,
+        "k_hat": 752,
+        "bracket_L": 752,
+        "bracket_U": 753,
+        "total_evaluations": 17,
+        "phase1_evaluations": 8,
+        "phase2_evaluations": 9,
+        "success": false,
+        "false_positive": true
+      }
+    ],
+    "evaluations_mean": 17.0,
+    "evaluations_std": 0.0,
+    "success_rate": 0.0,
+    "false_positive_rate": 1.0
+  },
+  "10": {
+    "window_size": 10,
+    "runs": [
+      {
+        "seed": 42,
+        "window_size": 10,
+        "k_hat": 984,
+        "bracket_L": 984,
+        "bracket_U": 985,
+        "total_evaluations": 18,
+        "phase1_evaluations": 8,
+        "phase2_evaluations": 10,
+        "success": false,
+        "false_positive": true
+      },
+      {
+        "seed": 43,
+        "window_size": 10,
+        "k_hat": 984,
+        "bracket_L": 984,
+        "bracket_U": 985,
+        "total_evaluations": 18,
+        "phase1_evaluations": 8,
+        "phase2_evaluations": 10,
+        "success": false,
+        "false_positive": true
+      }
+    ],
+    "evaluations_mean": 18.0,
+    "evaluations_std": 0.0,
+    "success_rate": 0.0,
+    "false_positive_rate": 1.0
+  }
+}
