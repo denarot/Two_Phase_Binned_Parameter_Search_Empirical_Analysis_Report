@@ -311,22 +311,34 @@ def two_phase_search(
 
     # ------------------------------------------------------------------
     # Phase 2: Binary Refinement on discrete domain [L, U]
-    # Terminates in ⌈log₂(U − L)⌉ evaluations (Theorem 3)
+    # Terminates in ceil(log2(U - L)) evaluations (Theorem 3)
+    #
+    # Decision criterion: epsilon-optimality comparison against the best
+    # accuracy seen so far (the plateau level).  Binary search evaluates
+    # k values out of monotone order, so the Phase-1 windowed gradient is
+    # not meaningful here; comparing acc(k_mid) to the plateau level gives
+    # the correct directional signal.
+    #
+    #   max_acc - acc_mid <= epsilon  =>  k_mid reaches plateau  => U = k_mid
+    #   max_acc - acc_mid >  epsilon  =>  k_mid below plateau    => L = k_mid
     # ------------------------------------------------------------------
+    max_acc = max(r.accuracy for r in trajectory)
+
     while U - L > 1:
         k_mid = (L + U) // 2
         acc_mid = _eval(k_mid, phase=2)
         acc_sequence.append(acc_mid)
+        max_acc = max(max_acc, acc_mid)
 
         g = windowed_gradient(acc_sequence, window_size)
         trajectory[-1].gradient = g
 
-        if g is not None and g < epsilon:
-            U = k_mid   # plateau or past it -> narrow from above
+        if max_acc - acc_mid <= epsilon:
+            U = k_mid   # k_mid is epsilon-optimal -> plateau onset at or below k_mid
         else:
-            L = k_mid   # not yet plateau -> narrow from below
+            L = k_mid   # k_mid is below plateau -> onset is above k_mid
 
-    k_hat = L
+    k_hat = U  # smallest epsilon-optimal k found by Phase 2
     best_accuracy = next(
         r.accuracy for r in reversed(trajectory) if r.k == k_hat
     )
@@ -496,21 +508,26 @@ def two_phase_search_reverse(
 
     # ------------------------------------------------------------------
     # Phase 2: Binary Refinement on discrete domain [L, U]
-    # Uses the same negative-gradient criterion as Phase 1: g < -epsilon
-    # means k_mid is below the plateau onset, so narrow from below (L=k_mid).
+    # Uses epsilon-optimality comparison: if acc(k_mid) is within epsilon
+    # of the plateau level (max_acc), k_mid is in the plateau -> U = k_mid.
+    # Otherwise k_mid is below the plateau -> L = k_mid.
+    # k_hat = U = minimum k that reaches the plateau.
     # ------------------------------------------------------------------
+    max_acc = max(r.accuracy for r in trajectory)
+
     while U - L > 1:
         k_mid = (L + U) // 2
         acc_mid = _eval(k_mid, phase=2)
         acc_sequence.append(acc_mid)
+        max_acc = max(max_acc, acc_mid)
 
         g = windowed_gradient(acc_sequence, window_size)
         trajectory[-1].gradient = g
 
-        if g is not None and g < -epsilon:
-            L = k_mid   # still below plateau onset -> narrow from below
+        if max_acc - acc_mid <= epsilon:
+            U = k_mid   # k_mid is epsilon-optimal -> narrow from above
         else:
-            U = k_mid   # in plateau or above -> narrow from above
+            L = k_mid   # k_mid is below plateau -> narrow from below
 
     k_hat = U
     best_accuracy = next(

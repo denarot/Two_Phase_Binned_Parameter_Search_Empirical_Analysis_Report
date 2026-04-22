@@ -2,36 +2,44 @@
   "covertype": {
     "seeds": [
       42,
-      43
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51
     ],
     "runs": [
       {
         "seed": 42,
         "k_values": {
-          "grid": 920,
-          "two_phase": 505,
+          "grid": 700,
+          "two_phase": 10,
           "default": 500
         },
         "metrics": {
           "grid": {
-            "k": 920,
-            "size_mb": 1465.7215461730957,
-            "inference_ms_per_sample": 60.00179549999302,
-            "test_accuracy": 0.924,
+            "k": 700,
+            "size_mb": 1046.4396057128906,
+            "inference_ms_per_sample": 25.69778020004742,
+            "test_accuracy": 0.875,
             "within_4mb_budget": false
           },
           "two_phase": {
-            "k": 505,
-            "size_mb": 804.4163045883179,
-            "inference_ms_per_sample": 32.85846139997011,
-            "test_accuracy": 0.9235,
+            "k": 10,
+            "size_mb": 14.813408851623535,
+            "inference_ms_per_sample": 0.5143833999754861,
+            "test_accuracy": 0.8501,
             "within_4mb_budget": false
           },
           "default": {
             "k": 500,
-            "size_mb": 796.279426574707,
-            "inference_ms_per_sample": 32.430133200017735,
-            "test_accuracy": 0.923,
+            "size_mb": 746.7528305053711,
+            "inference_ms_per_sample": 18.333138999994844,
+            "test_accuracy": 0.8745,
             "within_4mb_budget": false
           }
         }
@@ -39,30 +47,278 @@
       {
         "seed": 43,
         "k_values": {
-          "grid": 760,
-          "two_phase": 752,
+          "grid": 270,
+          "two_phase": 10,
           "default": 500
         },
         "metrics": {
           "grid": {
-            "k": 760,
-            "size_mb": 1210.3741035461426,
-            "inference_ms_per_sample": 49.491660200001206,
-            "test_accuracy": 0.9233,
+            "k": 270,
+            "size_mb": 404.38500022888184,
+            "inference_ms_per_sample": 9.944219899945892,
+            "test_accuracy": 0.8729,
             "within_4mb_budget": false
           },
           "two_phase": {
-            "k": 752,
-            "size_mb": 1197.6761283874512,
-            "inference_ms_per_sample": 48.990338400006294,
-            "test_accuracy": 0.9234,
+            "k": 10,
+            "size_mb": 14.784111976623535,
+            "inference_ms_per_sample": 0.5243448000401258,
+            "test_accuracy": 0.8524,
             "within_4mb_budget": false
           },
           "default": {
             "k": 500,
-            "size_mb": 796.5199813842773,
-            "inference_ms_per_sample": 32.44084689998999,
-            "test_accuracy": 0.9228,
+            "size_mb": 748.4687576293945,
+            "inference_ms_per_sample": 18.356600199942477,
+            "test_accuracy": 0.8747,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 44,
+        "k_values": {
+          "grid": 800,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 800,
+            "size_mb": 1194.7260246276855,
+            "inference_ms_per_sample": 29.335406000027433,
+            "test_accuracy": 0.8751,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 15.167031288146973,
+            "inference_ms_per_sample": 0.5135548999533057,
+            "test_accuracy": 0.8446,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 747.3481521606445,
+            "inference_ms_per_sample": 18.3529586000368,
+            "test_accuracy": 0.874,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 45,
+        "k_values": {
+          "grid": 510,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 510,
+            "size_mb": 762.040563583374,
+            "inference_ms_per_sample": 18.72161469992716,
+            "test_accuracy": 0.8741,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 14.858956336975098,
+            "inference_ms_per_sample": 0.5156453000381589,
+            "test_accuracy": 0.8483,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 747.1467361450195,
+            "inference_ms_per_sample": 18.348315099952742,
+            "test_accuracy": 0.8745,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 46,
+        "k_values": {
+          "grid": 700,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 700,
+            "size_mb": 1046.1219177246094,
+            "inference_ms_per_sample": 25.653913900023326,
+            "test_accuracy": 0.874,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 15.034966468811035,
+            "inference_ms_per_sample": 0.5132424000184983,
+            "test_accuracy": 0.848,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 747.2462997436523,
+            "inference_ms_per_sample": 18.450071699917316,
+            "test_accuracy": 0.8747,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 47,
+        "k_values": {
+          "grid": 620,
+          "two_phase": 505,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 620,
+            "size_mb": 925.51904296875,
+            "inference_ms_per_sample": 22.748606600100175,
+            "test_accuracy": 0.8744,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 505,
+            "size_mb": 754.1007528305054,
+            "inference_ms_per_sample": 18.48932179994881,
+            "test_accuracy": 0.8762,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 746.5347061157227,
+            "inference_ms_per_sample": 18.298750899964944,
+            "test_accuracy": 0.876,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 48,
+        "k_values": {
+          "grid": 780,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 780,
+            "size_mb": 1165.5430755615234,
+            "inference_ms_per_sample": 28.629514800035395,
+            "test_accuracy": 0.8763,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 14.977059364318848,
+            "inference_ms_per_sample": 0.5158548000035807,
+            "test_accuracy": 0.8491,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 746.9444046020508,
+            "inference_ms_per_sample": 18.41500419995282,
+            "test_accuracy": 0.8755,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 49,
+        "k_values": {
+          "grid": 860,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 860,
+            "size_mb": 1285.639892578125,
+            "inference_ms_per_sample": 31.78850979998242,
+            "test_accuracy": 0.875,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 14.93746280670166,
+            "inference_ms_per_sample": 0.5249753000680357,
+            "test_accuracy": 0.8472,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 747.1114883422852,
+            "inference_ms_per_sample": 18.393711399985477,
+            "test_accuracy": 0.875,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 50,
+        "k_values": {
+          "grid": 700,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 700,
+            "size_mb": 1046.182113647461,
+            "inference_ms_per_sample": 25.74820799997542,
+            "test_accuracy": 0.8752,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 15.146889686584473,
+            "inference_ms_per_sample": 0.5150385999586433,
+            "test_accuracy": 0.8467,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 747.0888290405273,
+            "inference_ms_per_sample": 18.260602099937387,
+            "test_accuracy": 0.8748,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 51,
+        "k_values": {
+          "grid": 1000,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 1000,
+            "size_mb": 1497.2092781066895,
+            "inference_ms_per_sample": 37.026554099982604,
+            "test_accuracy": 0.8741,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 14.875893592834473,
+            "inference_ms_per_sample": 0.5241399999940768,
+            "test_accuracy": 0.8489,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 748.2565841674805,
+            "inference_ms_per_sample": 18.345439900062047,
+            "test_accuracy": 0.8758,
             "within_4mb_budget": false
           }
         }
@@ -70,63 +326,71 @@
     ],
     "k_default": 500,
     "agg_grid": {
-      "size_mb_mean": 1338.0478248596191,
-      "size_mb_std": 127.67372131347656,
-      "inference_ms_mean": 54.746727849997114,
-      "inference_ms_std": 5.255067649995908,
-      "test_accuracy_mean": 0.9236500000000001,
+      "size_mb_mean": 1037.380651473999,
+      "size_mb_std": 283.46125099236264,
+      "inference_ms_mean": 25.529432800004724,
+      "inference_ms_std": 7.01801770617405,
+      "test_accuracy_mean": 0.87461,
       "budget_compliance_rate": 0.0
     },
     "agg_two_phase": {
-      "size_mb_mean": 1001.0462164878845,
-      "size_mb_std": 196.62991189956665,
-      "inference_ms_mean": 40.9243998999882,
-      "inference_ms_std": 8.065938500018092,
-      "test_accuracy_mean": 0.92345,
+      "size_mb_mean": 88.8696533203125,
+      "size_mb_std": 221.7437344940003,
+      "inference_ms_mean": 2.3150501299998725,
+      "inference_ms_std": 5.391425753367482,
+      "test_accuracy_mean": 0.85115,
       "budget_compliance_rate": 0.0
     },
     "agg_default": {
-      "size_mb_mean": 796.3997039794922,
-      "size_mb_std": 0.12027740478515625,
-      "inference_ms_mean": 32.435490050003864,
-      "inference_ms_std": 0.005356849986128509,
-      "test_accuracy_mean": 0.9229,
+      "size_mb_mean": 747.2898788452148,
+      "size_mb_std": 0.5831262759280198,
+      "inference_ms_mean": 18.355459309974684,
+      "inference_ms_std": 0.05179887492484243,
+      "test_accuracy_mean": 0.8749499999999999,
       "budget_compliance_rate": 0.0
     }
   },
   "mnist": {
     "seeds": [
       42,
-      43
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51
     ],
     "runs": [
       {
         "seed": 42,
         "k_values": {
-          "grid": 1000,
-          "two_phase": 965,
+          "grid": 370,
+          "two_phase": 10,
           "default": 500
         },
         "metrics": {
           "grid": {
-            "k": 1000,
-            "size_mb": 609.591290473938,
-            "inference_ms_per_sample": 65.37184500001604,
-            "test_accuracy": 0.7425,
+            "k": 370,
+            "size_mb": 101.9137716293335,
+            "inference_ms_per_sample": 13.61453659995459,
+            "test_accuracy": 0.9445,
             "within_4mb_budget": false
           },
           "two_phase": {
-            "k": 965,
-            "size_mb": 588.2707118988037,
-            "inference_ms_per_sample": 63.17430239997339,
-            "test_accuracy": 0.7435,
-            "within_4mb_budget": false
+            "k": 10,
+            "size_mb": 2.7266597747802734,
+            "inference_ms_per_sample": 0.51577320008073,
+            "test_accuracy": 0.901,
+            "within_4mb_budget": true
           },
           "default": {
             "k": 500,
-            "size_mb": 304.817177772522,
-            "inference_ms_per_sample": 32.57704249996459,
-            "test_accuracy": 0.679,
+            "size_mb": 137.86399173736572,
+            "inference_ms_per_sample": 18.21942019998096,
+            "test_accuracy": 0.9405,
             "within_4mb_budget": false
           }
         }
@@ -134,30 +398,278 @@
       {
         "seed": 43,
         "k_values": {
-          "grid": 990,
-          "two_phase": 967,
+          "grid": 910,
+          "two_phase": 505,
           "default": 500
         },
         "metrics": {
           "grid": {
-            "k": 990,
-            "size_mb": 603.19788646698,
-            "inference_ms_per_sample": 64.49200809997274,
-            "test_accuracy": 0.742,
+            "k": 910,
+            "size_mb": 250.70803356170654,
+            "inference_ms_per_sample": 33.41068179998547,
+            "test_accuracy": 0.9425,
             "within_4mb_budget": false
           },
           "two_phase": {
-            "k": 967,
-            "size_mb": 589.1519622802734,
-            "inference_ms_per_sample": 63.13735119998455,
-            "test_accuracy": 0.736,
+            "k": 505,
+            "size_mb": 139.2048282623291,
+            "inference_ms_per_sample": 18.55865779996384,
+            "test_accuracy": 0.9395,
             "within_4mb_budget": false
           },
           "default": {
             "k": 500,
-            "size_mb": 304.75098514556885,
-            "inference_ms_per_sample": 32.497098699968774,
-            "test_accuracy": 0.684,
+            "size_mb": 137.8472375869751,
+            "inference_ms_per_sample": 18.26474600005895,
+            "test_accuracy": 0.939,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 44,
+        "k_values": {
+          "grid": 760,
+          "two_phase": 505,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 760,
+            "size_mb": 209.3735933303833,
+            "inference_ms_per_sample": 27.855323800002225,
+            "test_accuracy": 0.94,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 505,
+            "size_mb": 139.1169376373291,
+            "inference_ms_per_sample": 18.404304299969226,
+            "test_accuracy": 0.94,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 137.7362756729126,
+            "inference_ms_per_sample": 18.20199530001264,
+            "test_accuracy": 0.941,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 45,
+        "k_values": {
+          "grid": 650,
+          "two_phase": 505,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 650,
+            "size_mb": 179.49149227142334,
+            "inference_ms_per_sample": 23.738334199995734,
+            "test_accuracy": 0.943,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 505,
+            "size_mb": 139.54485511779785,
+            "inference_ms_per_sample": 18.51719179993961,
+            "test_accuracy": 0.941,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 138.12326908111572,
+            "inference_ms_per_sample": 18.34876369999256,
+            "test_accuracy": 0.94,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 46,
+        "k_values": {
+          "grid": 470,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 470,
+            "size_mb": 129.49350261688232,
+            "inference_ms_per_sample": 17.234715499915183,
+            "test_accuracy": 0.944,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 2.7310543060302734,
+            "inference_ms_per_sample": 0.532638099975884,
+            "test_accuracy": 0.895,
+            "within_4mb_budget": true
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 137.77417850494385,
+            "inference_ms_per_sample": 18.2463741999818,
+            "test_accuracy": 0.945,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 47,
+        "k_values": {
+          "grid": 560,
+          "two_phase": 505,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 560,
+            "size_mb": 154.20314502716064,
+            "inference_ms_per_sample": 20.38263770006597,
+            "test_accuracy": 0.943,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 505,
+            "size_mb": 139.1081485748291,
+            "inference_ms_per_sample": 18.473567300010473,
+            "test_accuracy": 0.9425,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 137.75138187408447,
+            "inference_ms_per_sample": 18.316282899933867,
+            "test_accuracy": 0.943,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 48,
+        "k_values": {
+          "grid": 470,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 470,
+            "size_mb": 129.29053020477295,
+            "inference_ms_per_sample": 17.24620519997552,
+            "test_accuracy": 0.9425,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 2.7554988861083984,
+            "inference_ms_per_sample": 0.533047299948521,
+            "test_accuracy": 0.893,
+            "within_4mb_budget": true
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 137.6000452041626,
+            "inference_ms_per_sample": 18.25979619997088,
+            "test_accuracy": 0.942,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 49,
+        "k_values": {
+          "grid": 480,
+          "two_phase": 505,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 480,
+            "size_mb": 131.7887315750122,
+            "inference_ms_per_sample": 17.540632499963976,
+            "test_accuracy": 0.941,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 505,
+            "size_mb": 138.62117958068848,
+            "inference_ms_per_sample": 18.545998799963854,
+            "test_accuracy": 0.94,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 137.25699710845947,
+            "inference_ms_per_sample": 18.353880700073205,
+            "test_accuracy": 0.942,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 50,
+        "k_values": {
+          "grid": 650,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 650,
+            "size_mb": 179.0042486190796,
+            "inference_ms_per_sample": 23.888839700026438,
+            "test_accuracy": 0.9385,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 2.7406673431396484,
+            "inference_ms_per_sample": 0.5385078000836074,
+            "test_accuracy": 0.902,
+            "within_4mb_budget": true
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 137.65525150299072,
+            "inference_ms_per_sample": 18.306107899989,
+            "test_accuracy": 0.9375,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 51,
+        "k_values": {
+          "grid": 770,
+          "two_phase": 10,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 770,
+            "size_mb": 212.04455471038818,
+            "inference_ms_per_sample": 28.01832439994905,
+            "test_accuracy": 0.943,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 10,
+            "size_mb": 2.7596187591552734,
+            "inference_ms_per_sample": 0.5151242000283673,
+            "test_accuracy": 0.8965,
+            "within_4mb_budget": true
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 137.71265506744385,
+            "inference_ms_per_sample": 18.245703599997796,
+            "test_accuracy": 0.942,
             "within_4mb_budget": false
           }
         }
@@ -165,63 +677,71 @@
     ],
     "k_default": 500,
     "agg_grid": {
-      "size_mb_mean": 606.394588470459,
-      "size_mb_std": 3.196702003479004,
-      "inference_ms_mean": 64.93192654999439,
-      "inference_ms_std": 0.43991845002165064,
-      "test_accuracy_mean": 0.7422500000000001,
+      "size_mb_mean": 167.73116035461425,
+      "size_mb_std": 44.26614181966358,
+      "inference_ms_mean": 22.293023139983415,
+      "inference_ms_std": 5.86995670541651,
+      "test_accuracy_mean": 0.9421999999999999,
       "budget_compliance_rate": 0.0
     },
     "agg_two_phase": {
-      "size_mb_mean": 588.7113370895386,
-      "size_mb_std": 0.4406251907348633,
-      "inference_ms_mean": 63.15582679997897,
-      "inference_ms_std": 0.018475599994420833,
-      "test_accuracy_mean": 0.73975,
-      "budget_compliance_rate": 0.0
+      "size_mb_mean": 70.93094482421876,
+      "size_mb_std": 68.1885658223706,
+      "inference_ms_mean": 9.513481059996412,
+      "inference_ms_std": 8.986552943707633,
+      "test_accuracy_mean": 0.9190499999999998,
+      "budget_compliance_rate": 0.5
     },
     "agg_default": {
-      "size_mb_mean": 304.7840814590454,
-      "size_mb_std": 0.0330963134765625,
-      "inference_ms_mean": 32.53707059996668,
-      "inference_ms_std": 0.03997189999790862,
-      "test_accuracy_mean": 0.6815,
+      "size_mb_mean": 137.7321283340454,
+      "size_mb_std": 0.20863129855126067,
+      "inference_ms_mean": 18.276307069999167,
+      "inference_ms_std": 0.049750335827779116,
+      "test_accuracy_mean": 0.9411999999999999,
       "budget_compliance_rate": 0.0
     }
   },
   "adult": {
     "seeds": [
       42,
-      43
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51
     ],
     "runs": [
       {
         "seed": 42,
         "k_values": {
-          "grid": 590,
-          "two_phase": 640,
+          "grid": 480,
+          "two_phase": 320,
           "default": 500
         },
         "metrics": {
           "grid": {
-            "k": 590,
-            "size_mb": 179.1168613433838,
-            "inference_ms_per_sample": 38.31565780000528,
-            "test_accuracy": 0.92359375,
+            "k": 480,
+            "size_mb": 396.44031143188477,
+            "inference_ms_per_sample": 17.652129799942486,
+            "test_accuracy": 0.851077943615257,
             "within_4mb_budget": false
           },
           "two_phase": {
-            "k": 640,
-            "size_mb": 194.3075065612793,
-            "inference_ms_per_sample": 41.504527399956714,
-            "test_accuracy": 0.92421875,
+            "k": 320,
+            "size_mb": 264.31308364868164,
+            "inference_ms_per_sample": 11.800259699928574,
+            "test_accuracy": 0.8509673852957435,
             "within_4mb_budget": false
           },
           "default": {
             "k": 500,
-            "size_mb": 151.72237968444824,
-            "inference_ms_per_sample": 32.418410299986135,
-            "test_accuracy": 0.92390625,
+            "size_mb": 412.91497802734375,
+            "inference_ms_per_sample": 18.374014000059105,
+            "test_accuracy": 0.8514096185737977,
             "within_4mb_budget": false
           }
         }
@@ -229,30 +749,278 @@
       {
         "seed": 43,
         "k_values": {
-          "grid": 840,
+          "grid": 310,
+          "two_phase": 320,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 310,
+            "size_mb": 255.81261253356934,
+            "inference_ms_per_sample": 11.42558519996237,
+            "test_accuracy": 0.85085682697623,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 320,
+            "size_mb": 264.0449867248535,
+            "inference_ms_per_sample": 11.764469100045972,
+            "test_accuracy": 0.8503040353786623,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 412.9633483886719,
+            "inference_ms_per_sample": 18.359458500053734,
+            "test_accuracy": 0.8514096185737977,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 44,
+        "k_values": {
+          "grid": 680,
           "two_phase": 640,
           "default": 500
         },
         "metrics": {
           "grid": {
-            "k": 840,
-            "size_mb": 254.9363431930542,
-            "inference_ms_per_sample": 54.50664490001509,
-            "test_accuracy": 0.923125,
+            "k": 680,
+            "size_mb": 561.4666709899902,
+            "inference_ms_per_sample": 25.097929500043392,
+            "test_accuracy": 0.8526257600884467,
             "within_4mb_budget": false
           },
           "two_phase": {
             "k": 640,
-            "size_mb": 194.43968200683594,
-            "inference_ms_per_sample": 41.45691860001534,
-            "test_accuracy": 0.92265625,
+            "size_mb": 528.4898719787598,
+            "inference_ms_per_sample": 23.554160599946044,
+            "test_accuracy": 0.8528468767274737,
             "within_4mb_budget": false
           },
           "default": {
             "k": 500,
-            "size_mb": 152.02182579040527,
-            "inference_ms_per_sample": 32.372443399974145,
-            "test_accuracy": 0.923125,
+            "size_mb": 412.8212890625,
+            "inference_ms_per_sample": 18.469980900059454,
+            "test_accuracy": 0.8531785516860144,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 45,
+        "k_values": {
+          "grid": 220,
+          "two_phase": 320,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 220,
+            "size_mb": 182.00124263763428,
+            "inference_ms_per_sample": 8.187029500026256,
+            "test_accuracy": 0.8521835268103924,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 320,
+            "size_mb": 264.541202545166,
+            "inference_ms_per_sample": 11.81058530008886,
+            "test_accuracy": 0.8533996683250414,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 412.9244384765625,
+            "inference_ms_per_sample": 18.44978370005265,
+            "test_accuracy": 0.853510226644555,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 46,
+        "k_values": {
+          "grid": 210,
+          "two_phase": 320,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 210,
+            "size_mb": 173.4441614151001,
+            "inference_ms_per_sample": 7.783682000008412,
+            "test_accuracy": 0.852294085129906,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 320,
+            "size_mb": 264.34360122680664,
+            "inference_ms_per_sample": 11.84270630008541,
+            "test_accuracy": 0.8497512437810946,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 412.88018798828125,
+            "inference_ms_per_sample": 18.43382539995946,
+            "test_accuracy": 0.8506357103372029,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 47,
+        "k_values": {
+          "grid": 60,
+          "two_phase": 160,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 60,
+            "size_mb": 49.67549800872803,
+            "inference_ms_per_sample": 2.345338800107129,
+            "test_accuracy": 0.8499723604201216,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 160,
+            "size_mb": 132.35843181610107,
+            "inference_ms_per_sample": 6.001770499977283,
+            "test_accuracy": 0.8521835268103924,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 412.9456481933594,
+            "inference_ms_per_sample": 18.388993800035678,
+            "test_accuracy": 0.8529574350469873,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 48,
+        "k_values": {
+          "grid": 220,
+          "two_phase": 320,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 220,
+            "size_mb": 181.69530391693115,
+            "inference_ms_per_sample": 8.190134900039993,
+            "test_accuracy": 0.8490878938640133,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 320,
+            "size_mb": 264.2944679260254,
+            "inference_ms_per_sample": 11.953543999930844,
+            "test_accuracy": 0.8501934770591487,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 412.7437744140625,
+            "inference_ms_per_sample": 19.344642300042324,
+            "test_accuracy": 0.849861802100608,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 49,
+        "k_values": {
+          "grid": 340,
+          "two_phase": 640,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 340,
+            "size_mb": 280.7526550292969,
+            "inference_ms_per_sample": 12.499399200081825,
+            "test_accuracy": 0.8511885019347706,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 640,
+            "size_mb": 528.8479957580566,
+            "inference_ms_per_sample": 24.652309500030242,
+            "test_accuracy": 0.8521835268103924,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 412.8449401855469,
+            "inference_ms_per_sample": 18.94951269996818,
+            "test_accuracy": 0.852294085129906,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 50,
+        "k_values": {
+          "grid": 810,
+          "two_phase": 320,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 810,
+            "size_mb": 668.5000476837158,
+            "inference_ms_per_sample": 29.95984469994437,
+            "test_accuracy": 0.8515201768933113,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 320,
+            "size_mb": 264.02865982055664,
+            "inference_ms_per_sample": 11.786601300002076,
+            "test_accuracy": 0.8515201768933113,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 412.480712890625,
+            "inference_ms_per_sample": 18.363667199970223,
+            "test_accuracy": 0.852294085129906,
+            "within_4mb_budget": false
+          }
+        }
+      },
+      {
+        "seed": 51,
+        "k_values": {
+          "grid": 930,
+          "two_phase": 320,
+          "default": 500
+        },
+        "metrics": {
+          "grid": {
+            "k": 930,
+            "size_mb": 767.959924697876,
+            "inference_ms_per_sample": 34.49907429993618,
+            "test_accuracy": 0.8517412935323383,
+            "within_4mb_budget": false
+          },
+          "two_phase": {
+            "k": 320,
+            "size_mb": 264.19971084594727,
+            "inference_ms_per_sample": 11.80345240002498,
+            "test_accuracy": 0.8512990602542841,
+            "within_4mb_budget": false
+          },
+          "default": {
+            "k": 500,
+            "size_mb": 412.6404724121094,
+            "inference_ms_per_sample": 18.363749699899927,
+            "test_accuracy": 0.852294085129906,
             "within_4mb_budget": false
           }
         }
@@ -260,27 +1028,27 @@
     ],
     "k_default": 500,
     "agg_grid": {
-      "size_mb_mean": 217.026602268219,
-      "size_mb_std": 37.909740924835205,
-      "inference_ms_mean": 46.411151350010186,
-      "inference_ms_std": 8.095493550004903,
-      "test_accuracy_mean": 0.923359375,
+      "size_mb_mean": 351.7748428344727,
+      "size_mb_std": 226.8390214225654,
+      "inference_ms_mean": 15.764014790009242,
+      "inference_ms_std": 10.1548589821251,
+      "test_accuracy_mean": 0.8512548369264786,
       "budget_compliance_rate": 0.0
     },
     "agg_two_phase": {
-      "size_mb_mean": 194.37359428405762,
-      "size_mb_std": 0.06608772277832031,
-      "inference_ms_mean": 41.48072299998603,
-      "inference_ms_std": 0.023804399970686063,
-      "test_accuracy_mean": 0.9234374999999999,
+      "size_mb_mean": 303.94620122909544,
+      "size_mb_std": 118.94221462891286,
+      "inference_ms_mean": 13.696985870006028,
+      "inference_ms_std": 5.486374284642662,
+      "test_accuracy_mean": 0.8514648977335545,
       "budget_compliance_rate": 0.0
     },
     "agg_default": {
-      "size_mb_mean": 151.87210273742676,
-      "size_mb_std": 0.14972305297851562,
-      "inference_ms_mean": 32.39542684998014,
-      "inference_ms_std": 0.02298345000599511,
-      "test_accuracy_mean": 0.9235156250000001,
+      "size_mb_mean": 412.81597900390625,
+      "size_mb_std": 0.14611819593131245,
+      "inference_ms_mean": 18.549762820010073,
+      "inference_ms_std": 0.31362690241625985,
+      "test_accuracy_mean": 0.8519845218352682,
       "budget_compliance_rate": 0.0
     }
   }
