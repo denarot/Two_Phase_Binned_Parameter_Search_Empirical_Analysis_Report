@@ -544,13 +544,16 @@ def run_bidirectional_validation(seeds: Optional[List[int]] = None) -> dict:
                 "seed": seed,
                 "k_forward": fwd.k_hat,
                 "k_reverse": rev.k_hat,
+                "acc_forward": fwd.best_accuracy,
+                "acc_reverse": rev.best_accuracy,
                 "k_abs_diff": abs(fwd.k_hat - rev.k_hat),
                 "k_rel_diff": float(rel_diff),
                 "evals_forward": fwd.total_evaluations,
                 "evals_reverse": rev.total_evaluations,
             })
             print(f"  {ds_name}  seed={seed}  "
-                  f"fwd={fwd.k_hat}  rev={rev.k_hat}  "
+                  f"fwd={fwd.k_hat}({fwd.best_accuracy:.4f})  "
+                  f"rev={rev.k_hat}({rev.best_accuracy:.4f})  "
                   f"rel_diff={rel_diff:.3f}")
 
         rel_diffs = [run["k_rel_diff"] for run in runs]
