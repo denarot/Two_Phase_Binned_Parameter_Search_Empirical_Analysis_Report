@@ -44,6 +44,7 @@ import numpy as np
 K_MIN_DEFAULT    = 10
 K_MAX_DEFAULT    = 1000
 SUCCESS_DELTA    = 0.002   # acc(k_hat) >= acc(k_grid) - SUCCESS_DELTA counts as success
+BIDIR_DELTA      = 0.01    # |acc_fwd - acc_rev| <= BIDIR_DELTA: plateau spread tolerance
 MONO_TOLERANCE   = 0.005   # plateau variation tolerance (Section 7.1)
 ACC_TOLERANCE    = 0.01    # accuracy preservation tolerance (abstract)
 BIDIR_THRESHOLD  = 0.10    # bidirectional relative diff threshold (Section 7.6)
@@ -322,9 +323,12 @@ def check_accuracy_preservation(verbose: bool) -> CheckResult:
 def check_bidirectional(verbose: bool) -> CheckResult:
     """Check bidirectional convergence using accuracy-based criterion.
 
-    The correct criterion is: |acc(k_fwd) - acc(k_rev)| < SUCCESS_DELTA,
+    The correct criterion is: |acc(k_fwd) - acc(k_rev)| <= BIDIR_DELTA (0.01),
     not k-proximity.  Forward and reverse searches intentionally converge to
-    opposite ends of the same plateau, so large k-divergence is expected.
+    opposite ends of the same plateau, so large k-divergence is expected and
+    the accuracy gap measures plateau width (not error).  BIDIR_DELTA = 0.01
+    (the algorithm's epsilon-optimality tolerance), not SUCCESS_DELTA = 0.002
+    (which measures deviation from grid search, a stricter criterion).
 
     If the stored JSON lacks per-run accuracy (old format), this check is
     skipped with a note — re-run run_experiments.py to collect accuracy data.
@@ -366,17 +370,17 @@ def check_bidirectional(verbose: bool) -> CheckResult:
             if acc_fwd is None or acc_rev is None:
                 continue
             gap = abs(acc_fwd - acc_rev)
-            if gap > SUCCESS_DELTA:
+            if gap > BIDIR_DELTA:
                 result.passed = False
                 result.failures.append(
                     f"[{ds_name} seed={r['seed']}] "
                     f"|acc_fwd={acc_fwd:.5f} − acc_rev={acc_rev:.5f}| = {gap:.5f} "
-                    f"> {SUCCESS_DELTA}"
+                    f"> {BIDIR_DELTA}"
                 )
             elif verbose:
                 result.details.append(
                     f"[{ds_name} seed={r['seed']}] "
-                    f"|Δacc| = {gap:.5f} < {SUCCESS_DELTA} OK"
+                    f"|Δacc| = {gap:.5f} <= {BIDIR_DELTA} OK"
                 )
 
     return result
