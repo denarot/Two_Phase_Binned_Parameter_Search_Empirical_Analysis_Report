@@ -5,79 +5,79 @@
       {
         "seed": 42,
         "sigma": 0.0,
-        "k_hat": 10,
-        "total_evaluations": 17,
+        "k_hat": 133,
+        "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 43,
         "sigma": 0.0,
-        "k_hat": 10,
-        "total_evaluations": 17,
+        "k_hat": 225,
+        "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 44,
         "sigma": 0.0,
-        "k_hat": 10,
-        "total_evaluations": 17,
+        "k_hat": 472,
+        "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 45,
         "sigma": 0.0,
-        "k_hat": 10,
-        "total_evaluations": 17,
+        "k_hat": 210,
+        "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 46,
         "sigma": 0.0,
-        "k_hat": 10,
-        "total_evaluations": 17,
+        "k_hat": 147,
+        "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 47,
         "sigma": 0.0,
-        "k_hat": 505,
-        "total_evaluations": 17,
+        "k_hat": 439,
+        "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 48,
         "sigma": 0.0,
-        "k_hat": 10,
+        "k_hat": 320,
         "total_evaluations": 17,
         "success": false
       },
       {
         "seed": 49,
         "sigma": 0.0,
-        "k_hat": 10,
-        "total_evaluations": 17,
+        "k_hat": 171,
+        "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 50,
         "sigma": 0.0,
-        "k_hat": 10,
-        "total_evaluations": 17,
+        "k_hat": 295,
+        "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 51,
         "sigma": 0.0,
-        "k_hat": 10,
-        "total_evaluations": 17,
+        "k_hat": 450,
+        "total_evaluations": 18,
         "success": false
       }
     ],
-    "k_hat_mean": 59.5,
-    "k_hat_std": 148.5,
+    "k_hat_mean": 286.2,
+    "k_hat_std": 123.12172838293003,
     "success_rate": 0.0,
-    "evaluations_mean": 17.0,
-    "evaluations_std": 0.0
+    "evaluations_mean": 17.9,
+    "evaluations_std": 0.3
   },
   "0.01": {
     "sigma": 0.01,
@@ -85,79 +85,79 @@
       {
         "seed": 42,
         "sigma": 0.01,
-        "k_hat": 195,
-        "total_evaluations": 17,
+        "k_hat": 1000,
+        "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 43,
         "sigma": 0.01,
-        "k_hat": 431,
+        "k_hat": 814,
         "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 44,
         "sigma": 0.01,
-        "k_hat": 25,
-        "total_evaluations": 17,
+        "k_hat": 934,
+        "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 45,
         "sigma": 0.01,
-        "k_hat": 685,
-        "total_evaluations": 16,
+        "k_hat": 982,
+        "total_evaluations": 17,
         "success": false
       },
       {
         "seed": 46,
         "sigma": 0.01,
-        "k_hat": 272,
+        "k_hat": 921,
         "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 47,
         "sigma": 0.01,
-        "k_hat": 572,
-        "total_evaluations": 15,
+        "k_hat": 640,
+        "total_evaluations": 16,
         "success": false
       },
       {
         "seed": 48,
         "sigma": 0.01,
-        "k_hat": 482,
+        "k_hat": 437,
         "total_evaluations": 15,
         "success": false
       },
       {
         "seed": 49,
         "sigma": 0.01,
-        "k_hat": 643,
+        "k_hat": 862,
         "total_evaluations": 17,
         "success": false
       },
       {
         "seed": 50,
         "sigma": 0.01,
-        "k_hat": 487,
-        "total_evaluations": 15,
+        "k_hat": 620,
+        "total_evaluations": 16,
         "success": false
       },
       {
         "seed": 51,
         "sigma": 0.01,
-        "k_hat": 687,
-        "total_evaluations": 16,
+        "k_hat": 997,
+        "total_evaluations": 17,
         "success": false
       }
     ],
-    "k_hat_mean": 447.9,
-    "k_hat_std": 210.61122952017539,
+    "k_hat_mean": 820.7,
+    "k_hat_std": 182.7714693271354,
     "success_rate": 0.0,
-    "evaluations_mean": 16.4,
-    "evaluations_std": 1.1135528725660042
+    "evaluations_mean": 17.0,
+    "evaluations_std": 1.0
   },
   "0.02": {
     "sigma": 0.02,
@@ -165,79 +165,79 @@
       {
         "seed": 42,
         "sigma": 0.02,
-        "k_hat": 510,
+        "k_hat": 537,
         "total_evaluations": 15,
         "success": false
       },
       {
         "seed": 43,
         "sigma": 0.02,
-        "k_hat": 433,
+        "k_hat": 814,
         "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 44,
         "sigma": 0.02,
-        "k_hat": 441,
+        "k_hat": 934,
         "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 45,
         "sigma": 0.02,
-        "k_hat": 685,
-        "total_evaluations": 16,
+        "k_hat": 1000,
+        "total_evaluations": 17,
         "success": false
       },
       {
         "seed": 46,
         "sigma": 0.02,
-        "k_hat": 272,
+        "k_hat": 968,
         "total_evaluations": 18,
         "success": false
       },
       {
         "seed": 47,
         "sigma": 0.02,
-        "k_hat": 573,
+        "k_hat": 640,
         "total_evaluations": 16,
         "success": false
       },
       {
         "seed": 48,
         "sigma": 0.02,
-        "k_hat": 482,
+        "k_hat": 437,
         "total_evaluations": 15,
         "success": false
       },
       {
         "seed": 49,
         "sigma": 0.02,
-        "k_hat": 481,
+        "k_hat": 623,
         "total_evaluations": 15,
         "success": false
       },
       {
         "seed": 50,
         "sigma": 0.02,
-        "k_hat": 487,
-        "total_evaluations": 15,
+        "k_hat": 629,
+        "total_evaluations": 16,
         "success": false
       },
       {
         "seed": 51,
         "sigma": 0.02,
-        "k_hat": 177,
-        "total_evaluations": 13,
+        "k_hat": 280,
+        "total_evaluations": 14,
         "success": false
       }
     ],
-    "k_hat_mean": 454.1,
-    "k_hat_std": 135.54442076308416,
+    "k_hat_mean": 686.2,
+    "k_hat_std": 226.79938271520933,
     "success_rate": 0.0,
-    "evaluations_mean": 15.9,
-    "evaluations_std": 1.57797338380595
+    "evaluations_mean": 16.2,
+    "evaluations_std": 1.4
   },
   "0.05": {
     "sigma": 0.05,
@@ -245,42 +245,42 @@
       {
         "seed": 42,
         "sigma": 0.05,
-        "k_hat": 511,
-        "total_evaluations": 15,
+        "k_hat": 610,
+        "total_evaluations": 16,
         "success": false
       },
       {
         "seed": 43,
         "sigma": 0.05,
-        "k_hat": 884,
-        "total_evaluations": 16,
+        "k_hat": 932,
+        "total_evaluations": 17,
         "success": false
       },
       {
         "seed": 44,
         "sigma": 0.05,
-        "k_hat": 296,
+        "k_hat": 238,
         "total_evaluations": 13,
         "success": false
       },
       {
         "seed": 45,
         "sigma": 0.05,
-        "k_hat": 685,
-        "total_evaluations": 16,
+        "k_hat": 1000,
+        "total_evaluations": 17,
         "success": false
       },
       {
         "seed": 46,
         "sigma": 0.05,
-        "k_hat": 275,
-        "total_evaluations": 13,
+        "k_hat": 220,
+        "total_evaluations": 14,
         "success": false
       },
       {
         "seed": 47,
         "sigma": 0.05,
-        "k_hat": 573,
+        "k_hat": 640,
         "total_evaluations": 16,
         "success": false
       },
@@ -288,35 +288,35 @@
         "seed": 48,
         "sigma": 0.05,
         "k_hat": 240,
-        "total_evaluations": 13,
+        "total_evaluations": 14,
         "success": false
       },
       {
         "seed": 49,
         "sigma": 0.05,
-        "k_hat": 481,
+        "k_hat": 623,
         "total_evaluations": 15,
         "success": false
       },
       {
         "seed": 50,
         "sigma": 0.05,
-        "k_hat": 612,
-        "total_evaluations": 15,
+        "k_hat": 629,
+        "total_evaluations": 16,
         "success": false
       },
       {
         "seed": 51,
         "sigma": 0.05,
-        "k_hat": 177,
-        "total_evaluations": 13,
+        "k_hat": 280,
+        "total_evaluations": 14,
         "success": false
       }
     ],
-    "k_hat_mean": 473.4,
-    "k_hat_std": 213.80608036255657,
+    "k_hat_mean": 541.2,
+    "k_hat_std": 273.15995314101224,
     "success_rate": 0.0,
-    "evaluations_mean": 14.5,
-    "evaluations_std": 1.284523257866513
+    "evaluations_mean": 15.2,
+    "evaluations_std": 1.32664991614216
   }
 }
