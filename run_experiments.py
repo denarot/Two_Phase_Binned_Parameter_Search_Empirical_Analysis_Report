@@ -67,7 +67,7 @@ WINDOW_SIZE = 5
 GRID_STEP = 10
 RANDOM_N = 50
 BAYES_N = 30
-SUCCESS_THRESHOLD = 10                    # |k_method − k_grid| ≤ 10
+SUCCESS_DELTA = 0.002                     # acc(k_hat) >= acc(k_grid) - SUCCESS_DELTA
 
 MONOTONICITY_KS = [10, 20, 50, 100, 200, 300, 500, 750, 1000]
 SCALING_KMAXES = [100, 200, 500, 1000, 2000]
@@ -234,7 +234,7 @@ def run_primary_comparison(seeds: Optional[List[int]] = None) -> dict:
     Run all four methods on all three datasets over `seeds` trials.
 
     Records: k_hat, accuracy, evaluation count, wall-clock time.
-    Computes success rate as % of runs where |k_method − k_grid| ≤ 10.
+    Computes success rate as % of runs where acc(k_hat) >= acc(k_grid) - SUCCESS_DELTA.
 
     Output: results/primary.json
     """
@@ -312,15 +312,16 @@ def run_primary_comparison(seeds: Optional[List[int]] = None) -> dict:
                 "wall_clock_std": float(np.std(times)),
             }
 
-        # Compute success rates relative to grid search optimum
-        grid_ks = [run["k_hat"] for run in ds_results["grid"]["runs"]]
+        # Compute success rates: acc(k_hat) >= acc(k_grid) - SUCCESS_DELTA
+        grid_accs = {run["seed"]: run["cv_accuracy"] for run in ds_results["grid"]["runs"]}
         for method_name in methods:
-            method_ks = [run["k_hat"] for run in ds_results[method_name]["runs"]]
+            method_runs = ds_results[method_name]["runs"]
             successes = [
-                abs(mk - gk) <= SUCCESS_THRESHOLD
-                for mk, gk in zip(method_ks, grid_ks)
+                run["cv_accuracy"] >= grid_accs[run["seed"]] - SUCCESS_DELTA
+                for run in method_runs
+                if run["seed"] in grid_accs
             ]
-            ds_results[method_name]["success_rate"] = float(np.mean(successes))
+            ds_results[method_name]["success_rate"] = float(np.mean(successes)) if successes else 0.0
             ds_results[method_name]["success_count"] = int(sum(successes))
 
         # Speedup relative to grid search
@@ -434,7 +435,8 @@ def run_noise_robustness(seeds: Optional[List[int]] = None) -> dict:
     print("  Establishing noiseless grid-search reference...")
     ref = grid_search(X_train, y_train, K_MIN, K_MAX, GRID_STEP, CV_FOLDS, SEEDS[0])
     k_grid_ref = ref.k_hat
-    print(f"  Reference k* = {k_grid_ref}")
+    acc_grid_ref = ref.best_accuracy
+    print(f"  Reference k* = {k_grid_ref}  acc = {acc_grid_ref:.4f}")
 
     results: dict = {}
 
@@ -468,11 +470,12 @@ def run_noise_robustness(seeds: Optional[List[int]] = None) -> dict:
                 X_train, y_train, K_MIN, K_MAX, EPSILON, WINDOW_SIZE, CV_FOLDS,
                 random_state=seed, oracle=noisy_oracle
             )
-            success = abs(r.k_hat - k_grid_ref) <= SUCCESS_THRESHOLD
+            success = r.best_accuracy >= acc_grid_ref - SUCCESS_DELTA
             runs.append({
                 "seed": seed,
                 "sigma": sigma,
                 "k_hat": r.k_hat,
+                "cv_accuracy": r.best_accuracy,
                 "total_evaluations": r.total_evaluations,
                 "success": success,
             })
@@ -705,7 +708,8 @@ def run_window_ablation(seeds: Optional[List[int]] = None) -> dict:
     # Reference: grid search optimum at seed 42
     ref = grid_search(X_train, y_train, K_MIN, K_MAX, GRID_STEP, CV_FOLDS, SEEDS[0])
     k_grid_ref = ref.k_hat
-    print(f"  Reference k* = {k_grid_ref}")
+    acc_grid_ref = ref.best_accuracy
+    print(f"  Reference k* = {k_grid_ref}  acc = {acc_grid_ref:.4f}")
 
     results: dict = {}
 
@@ -715,7 +719,7 @@ def run_window_ablation(seeds: Optional[List[int]] = None) -> dict:
             r = two_phase_search(
                 X_train, y_train, K_MIN, K_MAX, EPSILON, w, CV_FOLDS, seed
             )
-            success = abs(r.k_hat - k_grid_ref) <= SUCCESS_THRESHOLD
+            success = r.best_accuracy >= acc_grid_ref - SUCCESS_DELTA
 
             # False positive: Phase 1 ended with a bracket that doesn't contain k_grid_ref
             bracket_contains_ref = r.bracket_L <= k_grid_ref <= r.bracket_U
@@ -725,6 +729,7 @@ def run_window_ablation(seeds: Optional[List[int]] = None) -> dict:
                 "seed": seed,
                 "window_size": w,
                 "k_hat": r.k_hat,
+                "cv_accuracy": r.best_accuracy,
                 "bracket_L": r.bracket_L,
                 "bracket_U": r.bracket_U,
                 "total_evaluations": r.total_evaluations,

@@ -46,6 +46,7 @@ METHOD_LABELS = {
 DATASETS = ["covertype", "mnist", "adult"]
 ALPHA = 0.05          # significance level for t-tests
 K_MIN = 10            # must match run_experiments.py K_MIN; override with --k-min if needed
+SUCCESS_DELTA = 0.002 # acc(k_hat) >= acc(k_grid) - SUCCESS_DELTA counts as success
 
 EFFECT_THRESHOLDS = [
     (2.0, "Huge"),
@@ -217,6 +218,10 @@ def print_table1(data: dict) -> None:
             _col(ds, "— data missing —", *[""] * 5, widths=W)
             continue
 
+        # Precompute per-seed grid accuracy for accuracy-based success metric
+        grid_acc_by_seed = {r["seed"]: r["cv_accuracy"]
+                            for r in data[ds]["grid"]["runs"]}
+
         first_ds_row = True
         for method in METHODS:
             m = data[ds][method]
@@ -226,7 +231,16 @@ def print_table1(data: dict) -> None:
             ev_mean = m["evaluations_mean"]
             ev_std = m["evaluations_std"]
             speedup = m["speedup"]
-            success = m["success_rate"] * 100
+
+            # Recompute success from run-level cv_accuracy (accuracy-based metric)
+            method_acc_by_seed = {r["seed"]: r["cv_accuracy"] for r in m["runs"]}
+            shared = sorted(set(grid_acc_by_seed) & set(method_acc_by_seed))
+            if shared:
+                successes = [method_acc_by_seed[s] >= grid_acc_by_seed[s] - SUCCESS_DELTA
+                             for s in shared]
+                success = float(np.mean(successes)) * 100
+            else:
+                success = m["success_rate"] * 100  # fallback if no cv_accuracy in runs
 
             ds_col = ds if first_ds_row else ""
             first_ds_row = False
@@ -244,7 +258,7 @@ def print_table1(data: dict) -> None:
             if method == "two_phase":
                 all_tp_evals.append(ev_mean)
                 all_tp_speedups.append(speedup)
-                all_tp_success.append(m["success_rate"])
+                all_tp_success.append(success / 100)
 
         _sep("-")
 
