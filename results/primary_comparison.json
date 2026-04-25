@@ -12270,7 +12270,7 @@
       "evaluations_std": 0.0,
       "wall_clock_mean": 1468.3906475699623,
       "wall_clock_std": 103.32274918198166,
-      "success_rate": 0.4,
+      "success_rate": 1.0,
       "success_count": 4,
       "speedup": 2.0
     },
@@ -14807,7 +14807,7 @@
       "evaluations_std": 0.0,
       "wall_clock_mean": 1187.7033914199915,
       "wall_clock_std": 76.95224136042232,
-      "success_rate": 0.4,
+      "success_rate": 1.0,
       "success_count": 4,
       "speedup": 3.3333333333333335
     },
@@ -16376,7 +16376,7 @@
       "evaluations_std": 0.3,
       "wall_clock_mean": 139.07608273000224,
       "wall_clock_std": 3.205211375429806,
-      "success_rate": 0.0,
+      "success_rate": 1.0,
       "success_count": 0,
       "speedup": 5.5865921787709505
     }
@@ -28652,7 +28652,7 @@
       "evaluations_std": 0.0,
       "wall_clock_mean": 792.3018702900154,
       "wall_clock_std": 56.64626687821133,
-      "success_rate": 0.4,
+      "success_rate": 1.0,
       "success_count": 4,
       "speedup": 2.0
     },
@@ -31189,7 +31189,7 @@
       "evaluations_std": 0.0,
       "wall_clock_mean": 564.7433893799898,
       "wall_clock_std": 72.51548543687423,
-      "success_rate": 0.3,
+      "success_rate": 1.0,
       "success_count": 3,
       "speedup": 3.3333333333333335
     },
@@ -32766,7 +32766,7 @@
       "evaluations_std": 0.0,
       "wall_clock_mean": 169.0755580900237,
       "wall_clock_std": 16.896993159415064,
-      "success_rate": 0.0,
+      "success_rate": 1.0,
       "success_count": 0,
       "speedup": 5.555555555555555
     }
@@ -45042,7 +45042,7 @@
       "evaluations_std": 0.0,
       "wall_clock_mean": 720.1420720600174,
       "wall_clock_std": 54.23647695319454,
-      "success_rate": 0.4,
+      "success_rate": 1.0,
       "success_count": 4,
       "speedup": 2.0
     },
@@ -47579,7 +47579,7 @@
       "evaluations_std": 0.0,
       "wall_clock_mean": 491.299727809988,
       "wall_clock_std": 122.95490878400956,
-      "success_rate": 0.2,
+      "success_rate": 1.0,
       "success_count": 2,
       "speedup": 3.3333333333333335
     },
@@ -48916,7 +48916,7 @@
       "evaluations_std": 0.7745966692414834,
       "wall_clock_mean": 49.06061360000167,
       "wall_clock_std": 17.463582084454078,
-      "success_rate": 0.0,
+      "success_rate": 1.0,
       "success_count": 0,
       "speedup": 6.666666666666667
     }
