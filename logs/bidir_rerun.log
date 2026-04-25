@@ -1,0 +1,65 @@
+
+======================================================================
+  Section 7.6 — Bidirectional Validation (Table 5)
+======================================================================
+
+Loading 'covertype'...
+  Fetching Covertype from sklearn (may download ~11MB)...
+  Subsampled to 50,000 rows  (54 features, 7 classes)
+  X_train: (40000, 54)  y_train: (40000,)
+  X_test:  (10000, 54)   y_test:  (10000,)
+  Classes: [1, 2, 3, 4, 5, 6, 7]
+  covertype  seed=42  fwd=133(0.8642)  rev=62(0.8616)  rel_diff=0.534
+  covertype  seed=43  fwd=225(0.8660)  rev=62(0.8628)  rel_diff=0.724
+  covertype  seed=44  fwd=472(0.8661)  rev=62(0.8612)  rel_diff=0.869
+  covertype  seed=45  fwd=210(0.8645)  rev=62(0.8603)  rel_diff=0.705
+  covertype  seed=46  fwd=147(0.8648)  rev=62(0.8624)  rel_diff=0.578
+  covertype  seed=47  fwd=439(0.8673)  rev=62(0.8628)  rel_diff=0.859
+  covertype  seed=48  fwd=320(0.8649)  rev=62(0.8620)  rel_diff=0.806
+  covertype  seed=49  fwd=171(0.8644)  rev=62(0.8623)  rel_diff=0.637
+  covertype  seed=50  fwd=295(0.8665)  rev=62(0.8629)  rel_diff=0.790
+  covertype  seed=51  fwd=450(0.8646)  rev=62(0.8602)  rel_diff=0.862
+
+Loading 'mnist'...
+  Fetching MNIST from OpenML (may download ~12MB)...
+  Subsampled to 10,000 rows  (784 features, 10 classes)
+  X_train: (8000, 784)  y_train: (8000,)
+  X_test:  (2000, 784)   y_test:  (2000,)
+  Classes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  mnist  seed=42  fwd=185(0.9406)  rev=62(0.9356)  rel_diff=0.665
+  mnist  seed=43  fwd=340(0.9435)  rev=62(0.9377)  rel_diff=0.818
+  mnist  seed=44  fwd=625(0.9439)  rev=62(0.9344)  rel_diff=0.901
+  mnist  seed=45  fwd=253(0.9435)  rev=62(0.9377)  rel_diff=0.755
+  mnist  seed=46  fwd=257(0.9434)  rev=62(0.9380)  rel_diff=0.759
+  mnist  seed=47  fwd=292(0.9419)  rev=62(0.9332)  rel_diff=0.788
+  mnist  seed=48  fwd=239(0.9431)  rev=62(0.9389)  rel_diff=0.741
+  mnist  seed=49  fwd=191(0.9420)  rev=62(0.9341)  rel_diff=0.675
+  mnist  seed=50  fwd=769(0.9421)  rev=62(0.9341)  rel_diff=0.919
+  mnist  seed=51  fwd=597(0.9421)  rev=62(0.9360)  rel_diff=0.896
+
+Loading 'adult'...
+  Fetching Adult from OpenML (may download ~1MB)...
+  Loaded 45,222 rows after missing-value removal  (14 features, 2 classes)
+  X_train: (36177, 14)  y_train: (36177,)
+  X_test:  (9045, 14)   y_test:  (9045,)
+  Classes: [0, 1]
+  adult  seed=42  fwd=338(0.8539)  rev=31(0.8500)  rel_diff=0.908
+  adult  seed=43  fwd=321(0.8544)  rev=31(0.8509)  rel_diff=0.903
+  adult  seed=44  fwd=641(0.8547)  rev=31(0.8511)  rel_diff=0.952
+  adult  seed=45  fwd=321(0.8541)  rev=31(0.8506)  rel_diff=0.903
+  adult  seed=46  fwd=321(0.8538)  rev=31(0.8506)  rel_diff=0.903
+  adult  seed=47  fwd=161(0.8541)  rev=40(0.8546)  rel_diff=0.752
+  adult  seed=48  fwd=321(0.8530)  rev=31(0.8501)  rel_diff=0.903
+  adult  seed=49  fwd=641(0.8545)  rev=31(0.8504)  rel_diff=0.952
+  adult  seed=50  fwd=321(0.8525)  rev=31(0.8496)  rel_diff=0.903
+  adult  seed=51  fwd=321(0.8544)  rev=31(0.8513)  rel_diff=0.903
+
+======================================================================
+  Table 5 — Bidirectional Validation Summary
+======================================================================
+  Dataset         k_fwd mean    k_rev mean    Rel diff mean   
+  covertype       286           62            0.7364±0.1153   
+  mnist           375           62            0.7916±0.0863   
+  adult           371           32            0.8984±0.0524   
+
+  Saved -> results\bidirectional_validation.json

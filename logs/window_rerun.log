@@ -1,0 +1,52 @@
+
+======================================================================
+  Section 7.8 — Window Size Ablation (Table 7)
+======================================================================
+
+Loading 'covertype'...
+  Fetching Covertype from sklearn (may download ~11MB)...
+  Subsampled to 50,000 rows  (54 features, 7 classes)
+  X_train: (40000, 54)  y_train: (40000,)
+  X_test:  (10000, 54)   y_test:  (10000,)
+  Classes: [1, 2, 3, 4, 5, 6, 7]
+  Reference k* = 700  acc = 0.8651
+  w=3  seed=42  k̂=  321  bracket=[320,321]  evals=15  success=True  fp=True
+  w=3  seed=43  k̂=  321  bracket=[320,321]  evals=15  success=True  fp=True
+  w=3  seed=44  k̂=  641  bracket=[640,641]  evals=16  success=True  fp=True
+  w=3  seed=45  k̂=  641  bracket=[640,641]  evals=16  success=True  fp=True
+  w=3  seed=46  k̂=  321  bracket=[320,321]  evals=15  success=True  fp=True
+  w=3  seed=47  k̂=  641  bracket=[640,641]  evals=16  success=True  fp=True
+  w=3  seed=48  k̂=  641  bracket=[640,641]  evals=16  success=True  fp=True
+  w=3  seed=49  k̂=  321  bracket=[320,321]  evals=15  success=True  fp=True
+  w=3  seed=50  k̂=  321  bracket=[320,321]  evals=15  success=True  fp=True
+  w=3  seed=51  k̂=  641  bracket=[640,641]  evals=16  success=True  fp=True
+  w=5  seed=42  k̂=  133  bracket=[132,133]  evals=18  success=True  fp=True
+  w=5  seed=43  k̂=  225  bracket=[224,225]  evals=18  success=True  fp=True
+  w=5  seed=44  k̂=  472  bracket=[471,472]  evals=18  success=True  fp=True
+  w=5  seed=45  k̂=  210  bracket=[209,210]  evals=18  success=True  fp=True
+  w=5  seed=46  k̂=  147  bracket=[146,147]  evals=18  success=True  fp=True
+  w=5  seed=47  k̂=  439  bracket=[438,439]  evals=18  success=True  fp=True
+  w=5  seed=48  k̂=  320  bracket=[319,320]  evals=17  success=True  fp=True
+  w=5  seed=49  k̂=  171  bracket=[170,171]  evals=18  success=True  fp=True
+  w=5  seed=50  k̂=  295  bracket=[294,295]  evals=18  success=True  fp=True
+  w=5  seed=51  k̂=  450  bracket=[449,450]  evals=18  success=True  fp=True
+  w=10  seed=42  k̂=  133  bracket=[132,133]  evals=18  success=True  fp=True
+  w=10  seed=43  k̂=  225  bracket=[224,225]  evals=18  success=True  fp=True
+  w=10  seed=44  k̂=  472  bracket=[471,472]  evals=18  success=True  fp=True
+  w=10  seed=45  k̂=  210  bracket=[209,210]  evals=18  success=True  fp=True
+  w=10  seed=46  k̂=  147  bracket=[146,147]  evals=18  success=True  fp=True
+  w=10  seed=47  k̂=  439  bracket=[438,439]  evals=18  success=True  fp=True
+  w=10  seed=48  k̂=  320  bracket=[319,320]  evals=17  success=True  fp=True
+  w=10  seed=49  k̂=  171  bracket=[170,171]  evals=18  success=True  fp=True
+  w=10  seed=50  k̂=  295  bracket=[294,295]  evals=18  success=True  fp=True
+  w=10  seed=51  k̂=  450  bracket=[449,450]  evals=18  success=True  fp=True
+
+======================================================================
+  Table 7 — Window Size Ablation Summary
+======================================================================
+  w      Evals mean    Success rate    False pos rate  
+  3      15.5±0.5      100%            100.0%          
+  5      17.9±0.3      100%            100.0%          
+  10     17.9±0.3      100%            100.0%          
+
+  Saved -> results\window_ablation.json

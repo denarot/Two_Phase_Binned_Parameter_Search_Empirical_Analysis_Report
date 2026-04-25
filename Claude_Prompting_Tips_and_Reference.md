@@ -1,152 +1,107 @@
-# Claude Prompting: Tips, Tricks, and Personal Reference
+LLM Prompting: Quick Reference & Best Practices
+Executive Summary (Read This First)
+The single most important rule: Before sending any message, ask: "Does this produce a deliverable, or does it produce a response that will lead to a second message that produces the deliverable?" If the latter, rewrite to skip the intermediate step.
 
-**Purpose:** A reusable reference document for getting the most out of Claude sessions. Three sections: a generic initialization prompt template, general best practices, and personal coaching notes based on observed patterns. Review before starting a new session until the habits are internalized.
+Five fastest wins:
 
----
+Batch everything. Five separate messages = 10+ turns. One batched message = 1–2 turns. Paste all related material at once.
 
-## Section 1: Generic Initialization Prompt Template
+Combine assessment and action. Don't ask "Is X relevant?" then "OK, add it." Say: "Assess X. If relevant, integrate it. If not, say so and move on."
 
-Paste and adapt this at the start of any project-oriented chat session. Replace the bracketed sections with your specifics.
+Treat "can you?" as "do this." Don't ask "Can you add this edit?" Say "Add this edit. If you can't, explain why."
 
----
+Lead with a briefing. Give the full project state before asking for action. A good briefing answers: what's the project, what's done, what remains, what's the goal for this session.
 
-**Template:**
+Upload files, don't describe them. Paraphrasing a long document wastes tokens and introduces errors.
 
-> **Project:** [One-sentence description of the project]
->
-> **Uploaded files:** [List files you've uploaded and what each one is]
->
-> **Session goal:** [What you want to accomplish in this session — e.g., "edit the paper," "write experimental code," "evaluate new material for relevance"]
->
-> **Standing instructions for this session:**
->
-> 1. When I share material for review, assess its relevance and act on your recommendation in the same response. If something should be integrated into [the paper / the journal / the codebase], draft the integration immediately. If it is not relevant, say so briefly and move on. Do not wait for a second prompt to act on your own recommendation.
->
-> 2. When I ask whether something can be done, treat it as a request to do it. If it cannot be done or there is a reason to pause, explain why instead. Otherwise, proceed.
->
-> 3. If an edit to an existing document is requested, make the edit directly. Do not describe the edit and wait for approval unless the change is ambiguous or risky (e.g., deleting content, changing a claim, altering a proof).
->
-> 4. When multiple small tasks are apparent from a single message, batch them into one response rather than handling them sequentially across multiple turns.
->
-> 5. I will tell you when I am planning to transition to a new chat. At that point, produce any transplant materials (briefing, checklist, etc.) without being asked whether they would be useful.
->
-> **What NOT to bring into this chat:** [List anything that is out of scope — e.g., "research journal material," "earlier transcript discussions," "pre-revision drafts"]
+One habit to break: Asking for opinions you'll immediately act on. If you're going to say "yes" after the LLM says "yes," just ask for the action directly.
 
----
+Section 1: Generic Session Initialization Prompt
+Paste and adapt this at the start of any project-oriented chat.
 
-**Example (filled in for the Two-Phase Search project):**
+Project: [One-sentence description]
 
-> **Project:** Two-Phase Search paper — experimental validation phase.
->
-> **Uploaded files:** Two_Phase_Search_Paper_Clean_v4.docx (current paper draft), Two_Phase_Search_Implementation_Guide.md (prompt-by-prompt code plan).
->
-> **Session goal:** Generate the experimental code described in the implementation guide, prompts 1–4.
->
-> **Standing instructions for this session:**
-> [paste the five standing instructions above unchanged]
->
-> **What NOT to bring into this chat:** Research journal material, provenance discussions, design philosophy analogies, pre-v4 paper drafts, or the Stumpy Forest / feature sampling research threads.
+Uploaded files: [List files and what each contains]
 
----
+Session goal: [What you want to accomplish]
 
-## Section 2: General Best Practices
+Standing instructions for this session:
 
-### Starting a session
+When I share material for review, assess relevance and act on your recommendation in the same response. If relevant, integrate it immediately. If not, say so briefly and move on.
 
-- **Lead with a briefing, not a question.** Give Claude the full project state before asking it to do anything. A good briefing answers: what is the project, what is done, what remains, and what is the goal for this session. This eliminates multiple rounds of Claude asking for context.
+Treat "Can this be done?" as "Do this." If you cannot or should not proceed, explain why. Otherwise, proceed.
 
-- **Upload files rather than describing them.** If Claude needs to reference a document, upload it. Paraphrasing a 30-page paper into chat messages wastes tokens and introduces inaccuracies.
+When I request an edit, make it directly. Do not describe the edit and wait for approval unless the change is ambiguous or risky (e.g., deleting content, changing a key claim).
 
-- **Scope the session explicitly.** Tell Claude what is in scope and what is not. This prevents Claude from pulling in tangential material and keeps responses focused.
+Batch multiple small tasks from a single message into one response rather than handling them sequentially.
 
-### During a session
+When I tell you I am transitioning to a new chat, produce transplant materials (briefing, checklist, etc.) without being asked whether they would be useful.
 
-- **Combine assessment and action in a single request.** Instead of "Is X relevant?" followed by "OK, add it," say "Assess X for relevance. If relevant, integrate it and tell me what you changed. If not, say so and move on." This collapses two turns into one.
+Out of scope for this chat: [List exclusions]
 
-- **Treat feasibility questions as action requests.** Instead of "Can you do X?" followed by "Please do X," say "Do X. If there's a reason you can't, explain instead." Claude will almost always be able to do it; the rare exception is worth handling as a fallback rather than as the default path.
+Section 2: General Best Practices
+Starting a session
+Brief first, then ask. A complete briefing eliminates back-and-forth.
 
-- **Batch related material.** If you have five items to evaluate, paste all five in one message with a framing instruction rather than submitting them one at a time. One prompt and one response covers all five.
+Upload, don't paraphrase. Token efficiency + accuracy.
 
-- **Grant agency with guardrails.** Instead of asking Claude to wait for permission at every step, say "proceed unless the change is ambiguous or would delete existing content." This lets Claude act on clear-cut items while still pausing on genuinely uncertain ones.
+Set boundaries explicitly. Tell the LLM what to ignore. This prevents tangents.
 
-- **Don't ask Claude to confirm what it just said.** If Claude recommends an edit and you agree, say "do it" — not "yes, I agree with your recommendation, could you please go ahead and implement it?" The shorter version saves tokens and communicates the same intent.
+During a session
+Batch related items. One prompt covering five items > five prompts.
 
-### Knowing when to transition
+Grant agency with guardrails. "Proceed unless the change is ambiguous or would delete content" is faster than asking permission for every step.
 
-- **Move to a new chat when switching tasks, not when hitting the wall.** Transitioning between "edit the paper" and "write experimental code" is a natural breakpoint. Transitioning mid-task because the context window filled up produces worse results because Claude loses the working state at the worst possible time.
+Don't ask for confirmation of what the LLM just said. If it recommends an edit and you agree, say "do it" — not "yes, I agree, please implement it."
 
-- **Prepare transplant materials before you need them.** Ask Claude to produce a briefing and checklist at the end of a productive session, while the full context is still available. Don't wait until the next session and try to reconstruct from memory.
+When to start a fresh chat
+Transition at task boundaries, not when hitting the context limit. Switching from "edit paper" to "write code" is a natural break. Mid-task transitions due to a full context window lose working state.
 
-- **Keep separate documents for separate concerns.** The paper, the research journal, the checklist, and the implementation guide are four distinct documents serving four distinct purposes. Mixing them into one mega-document makes every session slower because Claude has to parse what's relevant.
+Prepare handoff materials before you need them. At the end of a productive session, ask for a briefing and checklist while context is still fresh.
 
-### Document and file management
+File management
+One concern, one document. The paper, research notes, and checklists are separate files. Mixing them slows every session.
 
-- **Bifurcate strictly:** content for the paper goes in the paper; provenance, analogies, and future directions go in a separate journal or notes document; checklists and tracking go in a third document. This discipline keeps the paper tight and prevents scope creep.
+Version your deliverables. v1, v2, v3 naming avoids ambiguity.
 
-- **Version your deliverables.** v1, v2, v3, v4 naming makes it unambiguous which file is authoritative. Always tell Claude which version is current.
+Save after each successful edit. Download after each confirmed change. If a later edit fails, roll back without redoing work.
 
-- **Save after each successful edit.** Download the file after each confirmed change. If a later edit fails or introduces problems, you can roll back to the last good version without re-doing work.
+Section 3: Personal Coaching Notes
+Based on observed patterns. Review before starting a session until the habits become automatic.
 
----
+Pattern 1: Feasibility check before action
+❌ Instead of: "Is there an efficient way to add these revisions?" → [LLM explains] → "OK, please do it."
 
-## Section 3: Personal Coaching Notes
+✅ Do this: "Add these revisions. If there's a more efficient method than what I'm imagining, use that instead."
 
-*These notes are based on patterns observed in your April 2026 session on the Two-Phase Search paper. Review them before starting a session until the habits become automatic. The goal is to reduce unnecessary round-trips and maximize the amount of useful work per message.*
+Why: Each unnecessary check costs a full round-trip. Action-first gets the same result in half the messages.
 
-### Pattern 1: The feasibility check before the action request
+Pattern 2: Evaluate then act, separately
+❌ Instead of: "Read this and tell me what's relevant" → [LLM assesses] → "OK, please integrate it."
 
-**What you did:** "Is there an efficient method of adding the revisions?" → [Claude explains yes] → "Please do it."
+✅ Do this: "Read this. Integrate anything relevant. For anything not relevant, note why briefly."
 
-**What to do instead:** "Add the revisions to the paper using targeted XML edits. If there's a more efficient method than what I'm imagining, use that instead."
+Why: The two-step version makes the LLM read the material twice. The one-step version reads once and acts.
 
-**Why it matters:** Each feasibility check costs a full round-trip (your message + Claude's response). Over a session with five such checks, that is ten messages that produce no deliverable. The action-first pattern gets the same result in half the messages.
+Pattern 3: Sequential review of multiple items
+❌ Instead of: Five separate messages, each with "is this relevant?"
 
-**Self-check question before sending:** "Am I asking whether something can be done, or am I asking for it to be done?" If the former, rewrite to the latter.
+✅ Do this: One message: "Here are five excerpts. For each: (a) integrate, (b) file as reference, or (c) skip. For (a) and (b), draft the integration in the same response."
 
-### Pattern 2: Evaluate, then act — in separate messages
+Why: Five cycles cost 10+ messages. One batched message costs 1–2. This is the largest single efficiency gain.
 
-**What you did:** "Could you read through this and determine what is relevant?" → [Claude assesses] → "Yes, please integrate the relevant parts."
+Pattern 4: Asking permission to transition
+❌ Instead of: "How close to the limit am I? Should I start a new chat?"
 
-**What to do instead:** "Read through this. Integrate anything relevant to [the paper / the journal]. For anything not relevant, note why briefly and skip it."
+✅ Do this: "I'm starting a new chat after this task. Please produce: (1) an updated project briefing, and (2) any handoff notes on decisions made in this session."
 
-**Why it matters:** The two-step version means Claude reads the material twice — once to assess, once to act. The one-step version reads once and acts. For long documents, this saves significant context.
+Why: You already know the answer. Stating the decision gets the handoff materials in one turn.
 
-**Self-check question before sending:** "Am I asking for an opinion I'll immediately act on, or am I asking for a deliverable?" If the opinion is just a gate to the deliverable, skip the gate.
+What to keep doing
+Separate concerns (paper vs. notes vs. checklists). This is correct and valuable.
 
-### Pattern 3: Sequential material review instead of batching
+Write good briefings. They're the highest-leverage thing you can produce.
 
-**What you did:** Submitted five separate pieces of historical material across five separate messages, each with "is this relevant?"
+Delegate phrasing but control scope. That's the most efficient division of labor.
 
-**What to do instead:** Paste all related material into a single message: "Here are five excerpts from earlier chats. For each one, classify as (a) integrate into paper, (b) integrate into journal, or (c) skip. For (a) and (b), draft the integration in the same response."
-
-**Why it matters:** Five sequential evaluate-then-act cycles cost 10+ messages. One batched message costs 1–2 messages for the same outcome. This is the single largest efficiency gain available in material-heavy sessions.
-
-**Self-check question before sending:** "Do I have more material of the same type to share? If yes, wait and batch it."
-
-### Pattern 4: Asking for permission to transition
-
-**What you did:** "How close to the chat limit am I? Is it beneficial to take the current draft to a new chat?"
-
-**What to do instead:** "I'm planning to transition to a new chat after this task. Please produce: (1) an updated project briefing for the new chat, and (2) any transplant notes on decisions made in this session."
-
-**Why it matters:** You already knew the answer — you were deep into the session and about to shift tasks. The question was a politeness reflex, not a genuine uncertainty. Treating it as a statement and a request gets the transplant materials in one turn.
-
-**Self-check question before sending:** "Am I asking a question I already know the answer to?" If yes, state the answer and ask for the next action.
-
-### What you should NOT change
-
-- **Your instinct to separate concerns is correct and valuable.** Keep asking "is this relevant to the paper or to the journal?" — just combine the question with the action instruction.
-
-- **Your briefing documents are excellent.** The project briefing you produced for this session was the gold standard. Keep using that format.
-
-- **Your willingness to catalog and defer is rare and valuable.** Most people try to cram everything into the paper. Your discipline in keeping the paper tight and the journal separate produces a better paper. Do not lose this habit.
-
-- **Your sense of when to ask for help vs. when to specify is well-calibrated.** You delegate phrasing but retain control over scope and structure. This is the most efficient division of labor between you and Claude.
-
-### The one-sentence summary
-
-**Before sending any message, ask: "Does this message produce a deliverable, or does it produce a response that will lead to a second message that produces the deliverable?" If the latter, rewrite to skip the intermediate step.**
-
----
-
-*Last updated: April 2026. Review before each new session until the patterns in Section 3 feel automatic.*
+Last updated: April 2026. Review the Executive Summary before each session until the patterns feel automatic.
