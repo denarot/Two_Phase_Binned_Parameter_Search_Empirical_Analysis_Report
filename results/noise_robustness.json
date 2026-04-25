@@ -6,76 +6,86 @@
         "seed": 42,
         "sigma": 0.0,
         "k_hat": 133,
+        "cv_accuracy": 0.864175,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 43,
         "sigma": 0.0,
         "k_hat": 225,
+        "cv_accuracy": 0.8660499999999999,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 44,
         "sigma": 0.0,
         "k_hat": 472,
+        "cv_accuracy": 0.8660749999999998,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 45,
         "sigma": 0.0,
         "k_hat": 210,
+        "cv_accuracy": 0.8644999999999999,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 46,
         "sigma": 0.0,
         "k_hat": 147,
+        "cv_accuracy": 0.8647500000000001,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 47,
         "sigma": 0.0,
         "k_hat": 439,
+        "cv_accuracy": 0.8672500000000001,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 48,
         "sigma": 0.0,
         "k_hat": 320,
+        "cv_accuracy": 0.864875,
         "total_evaluations": 17,
-        "success": false
+        "success": true
       },
       {
         "seed": 49,
         "sigma": 0.0,
         "k_hat": 171,
+        "cv_accuracy": 0.864425,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 50,
         "sigma": 0.0,
         "k_hat": 295,
+        "cv_accuracy": 0.86645,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 51,
         "sigma": 0.0,
         "k_hat": 450,
+        "cv_accuracy": 0.864575,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       }
     ],
     "k_hat_mean": 286.2,
     "k_hat_std": 123.12172838293003,
-    "success_rate": 0.0,
+    "success_rate": 1.0,
     "evaluations_mean": 17.9,
     "evaluations_std": 0.3
   },
@@ -86,41 +96,47 @@
         "seed": 42,
         "sigma": 0.01,
         "k_hat": 1000,
+        "cv_accuracy": 0.8638019509029775,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 43,
         "sigma": 0.01,
         "k_hat": 814,
+        "cv_accuracy": 0.8771749999999999,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 44,
         "sigma": 0.01,
         "k_hat": 934,
+        "cv_accuracy": 0.8764,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 45,
         "sigma": 0.01,
         "k_hat": 982,
+        "cv_accuracy": 0.8747766597876823,
         "total_evaluations": 17,
-        "success": false
+        "success": true
       },
       {
         "seed": 46,
         "sigma": 0.01,
         "k_hat": 921,
+        "cv_accuracy": 0.8754,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 47,
         "sigma": 0.01,
         "k_hat": 640,
+        "cv_accuracy": 0.8582000000000001,
         "total_evaluations": 16,
         "success": false
       },
@@ -128,34 +144,38 @@
         "seed": 48,
         "sigma": 0.01,
         "k_hat": 437,
+        "cv_accuracy": 0.8754249999999999,
         "total_evaluations": 15,
-        "success": false
+        "success": true
       },
       {
         "seed": 49,
         "sigma": 0.01,
         "k_hat": 862,
+        "cv_accuracy": 0.87575,
         "total_evaluations": 17,
-        "success": false
+        "success": true
       },
       {
         "seed": 50,
         "sigma": 0.01,
         "k_hat": 620,
+        "cv_accuracy": 0.8764212126477429,
         "total_evaluations": 16,
-        "success": false
+        "success": true
       },
       {
         "seed": 51,
         "sigma": 0.01,
         "k_hat": 997,
+        "cv_accuracy": 0.875325,
         "total_evaluations": 17,
-        "success": false
+        "success": true
       }
     ],
     "k_hat_mean": 820.7,
     "k_hat_std": 182.7714693271354,
-    "success_rate": 0.0,
+    "success_rate": 0.9,
     "evaluations_mean": 17.0,
     "evaluations_std": 1.0
   },
@@ -166,27 +186,31 @@
         "seed": 42,
         "sigma": 0.02,
         "k_hat": 537,
+        "cv_accuracy": 0.8846842314684609,
         "total_evaluations": 15,
-        "success": false
+        "success": true
       },
       {
         "seed": 43,
         "sigma": 0.02,
         "k_hat": 814,
+        "cv_accuracy": 0.8871749999999999,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 44,
         "sigma": 0.02,
         "k_hat": 934,
+        "cv_accuracy": 0.8864,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 45,
         "sigma": 0.02,
         "k_hat": 1000,
+        "cv_accuracy": 0.852211108711625,
         "total_evaluations": 17,
         "success": false
       },
@@ -194,13 +218,15 @@
         "seed": 46,
         "sigma": 0.02,
         "k_hat": 968,
+        "cv_accuracy": 0.8852999999999999,
         "total_evaluations": 18,
-        "success": false
+        "success": true
       },
       {
         "seed": 47,
         "sigma": 0.02,
         "k_hat": 640,
+        "cv_accuracy": 0.8482000000000001,
         "total_evaluations": 16,
         "success": false
       },
@@ -208,34 +234,38 @@
         "seed": 48,
         "sigma": 0.02,
         "k_hat": 437,
+        "cv_accuracy": 0.8854249999999999,
         "total_evaluations": 15,
-        "success": false
+        "success": true
       },
       {
         "seed": 49,
         "sigma": 0.02,
         "k_hat": 623,
+        "cv_accuracy": 0.8849250000000001,
         "total_evaluations": 15,
-        "success": false
+        "success": true
       },
       {
         "seed": 50,
         "sigma": 0.02,
         "k_hat": 629,
+        "cv_accuracy": 0.8874249999999999,
         "total_evaluations": 16,
-        "success": false
+        "success": true
       },
       {
         "seed": 51,
         "sigma": 0.02,
         "k_hat": 280,
+        "cv_accuracy": 0.881903847869844,
         "total_evaluations": 14,
-        "success": false
+        "success": true
       }
     ],
     "k_hat_mean": 686.2,
     "k_hat_std": 226.79938271520933,
-    "success_rate": 0.0,
+    "success_rate": 0.8,
     "evaluations_mean": 16.2,
     "evaluations_std": 1.4
   },
@@ -246,27 +276,31 @@
         "seed": 42,
         "sigma": 0.05,
         "k_hat": 610,
+        "cv_accuracy": 0.9147000000000001,
         "total_evaluations": 16,
-        "success": false
+        "success": true
       },
       {
         "seed": 43,
         "sigma": 0.05,
         "k_hat": 932,
+        "cv_accuracy": 0.9170500000000001,
         "total_evaluations": 17,
-        "success": false
+        "success": true
       },
       {
         "seed": 44,
         "sigma": 0.05,
         "k_hat": 238,
+        "cv_accuracy": 0.915475,
         "total_evaluations": 13,
-        "success": false
+        "success": true
       },
       {
         "seed": 45,
         "sigma": 0.05,
         "k_hat": 1000,
+        "cv_accuracy": 0.8326152717790625,
         "total_evaluations": 17,
         "success": false
       },
@@ -274,13 +308,15 @@
         "seed": 46,
         "sigma": 0.05,
         "k_hat": 220,
+        "cv_accuracy": 0.914975,
         "total_evaluations": 14,
-        "success": false
+        "success": true
       },
       {
         "seed": 47,
         "sigma": 0.05,
         "k_hat": 640,
+        "cv_accuracy": 0.8182,
         "total_evaluations": 16,
         "success": false
       },
@@ -288,34 +324,38 @@
         "seed": 48,
         "sigma": 0.05,
         "k_hat": 240,
+        "cv_accuracy": 0.9144749999999999,
         "total_evaluations": 14,
-        "success": false
+        "success": true
       },
       {
         "seed": 49,
         "sigma": 0.05,
         "k_hat": 623,
+        "cv_accuracy": 0.9149250000000001,
         "total_evaluations": 15,
-        "success": false
+        "success": true
       },
       {
         "seed": 50,
         "sigma": 0.05,
         "k_hat": 629,
+        "cv_accuracy": 0.9174249999999999,
         "total_evaluations": 16,
-        "success": false
+        "success": true
       },
       {
         "seed": 51,
         "sigma": 0.05,
         "k_hat": 280,
+        "cv_accuracy": 0.9095471196746101,
         "total_evaluations": 14,
-        "success": false
+        "success": true
       }
     ],
     "k_hat_mean": 541.2,
     "k_hat_std": 273.15995314101224,
-    "success_rate": 0.0,
+    "success_rate": 0.8,
     "evaluations_mean": 15.2,
     "evaluations_std": 1.32664991614216
   }
