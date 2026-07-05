@@ -1,0 +1,206 @@
+Now I have everything I need. Here is the clean, self-contained, copy-pasteable implementation:
+
+
+"""
+Two-Phase Binned Parameter Search — Optimal Random Forest Tree Count
+=====================================================================
+Drop-in function to replace grid search for n_estimators tuning.
+
+Usage
+-----
+    from sklearn.datasets import load_iris
+    X, y = load_iris(return_X_y=True)
+
+    k_hat, acc = find_optimal_n_estimators(X, y)
+    clf = RandomForestClassifier(n_estimators=k_hat).fit(X, y)
+
+Algorithm
+---------
+Phase 1 — Exponential Bracketing:
+    Evaluates k = k_min · 2^i until the windowed gradient Ḡ_w < ε,
+    indicating the accuracy plateau has been reached.  Produces bracket [L, U].
+
+Phase 2 — Binary Refinement:
+    Binary search on [L, U]: k_mid is kept if acc(k_mid) is within ε
+    of the plateau level (max_acc - acc_mid ≤ ε), else discarded.
+    Returns k_hat = smallest k on the accuracy plateau.
+
+Empirically validated defaults (Section 7, Tables 4 & 7):
+    window_size = 5  (optimal; w=3 saves ~2 evals but raises FP risk)
+    epsilon     = 1e-3
+    Typical eval count: ~18 on 40K-row datasets vs ~100 for grid search.
+
+References
+----------
+"Two-Phase Search for Optimal Random Forest Tree Count:
+ Seven Theorems Proving O(log N) Optimality"
+"""
+
+from __future__ import annotations
+import math
+from typing import Optional, List
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import StratifiedKFold
+
+
+# ---------------------------------------------------------------------------
+# Warm-start oracle (Section 5.3)
+# Caches the largest fitted forest; subsets estimators_ for downward steps.
+# Valid because RF trees are independently and identically constructed.
+# ---------------------------------------------------------------------------
+
+class _WarmStartOracle:
+    def __init__(self, X, y, cv_folds: int, random_state: int):
+        self.X = np.asarray(X)
+        self.y = np.asarray(y)
+        self.splits = list(
+            StratifiedKFold(n_splits=cv_folds, shuffle=True, random_state=random_state)
+            .split(X, y)
+        )
+        self.random_state = random_state
+        self._cached_k = 0
+        self._cached_forests: Optional[List[RandomForestClassifier]] = None
+
+    def __call__(self, k: int) -> float:
+        if self._cached_forests is not None and k <= self._cached_k:
+            scores = []
+            for i, (_, val) in enumerate(self.splits):
+                f = self._cached_forests[i]
+                orig = f.estimators_, f.n_estimators
+                f.estimators_, f.n_estimators = orig[0][:k], k
+                scores.append(f.score(self.X[val], self.y[val]))
+                f.estimators_, f.n_estimators = orig
+            return float(np.mean(scores))
+
+        forests, scores = [], []
+        for train, val in self.splits:
+            clf = RandomForestClassifier(n_estimators=k,
+                                         random_state=self.random_state,
+                                         n_jobs=-1)
+            clf.fit(self.X[train], self.y[train])
+            scores.append(clf.score(self.X[val], self.y[val]))
+            forests.append(clf)
+        if k > self._cached_k:
+            self._cached_k, self._cached_forests = k, forests
+        return float(np.mean(scores))
+
+
+# ---------------------------------------------------------------------------
+# Plateau detection: windowed mean gradient Ḡ_w (Assumption 2)
+# Returns None until w+1 evaluations are available (window not full yet).
+# ---------------------------------------------------------------------------
+
+def _windowed_gradient(acc_seq: List[float], w: int) -> Optional[float]:
+    if len(acc_seq) < w + 1:
+        return None
+    recent = acc_seq[-(w + 1):]
+    return sum(recent[j + 1] - recent[j] for j in range(w)) / w
+
+
+# ---------------------------------------------------------------------------
+# Public API
+# ---------------------------------------------------------------------------
+
+def find_optimal_n_estimators(
+    X,
+    y,
+    k_min:       int   = 10,
+    k_max:       int   = 1000,
+    epsilon:     float = 1e-3,
+    window_size: int   = 5,
+    cv_folds:    int   = 5,
+    random_state: int  = 42,
+) -> tuple[int, float]:
+    """
+    Find the smallest n_estimators that reaches the accuracy plateau.
+
+    Parameters
+    ----------
+    X, y         : Training data and labels.
+    k_min        : Minimum tree count to consider (default 10).
+    k_max        : Maximum tree count to consider (default 1000).
+    epsilon      : Plateau detection threshold (default 1e-3).
+    window_size  : Gradient averaging window w ≥ 3 (default 5, ablation-validated).
+    cv_folds     : CV folds for accuracy oracle (default 5).
+    random_state : Reproducibility seed (default 42).
+
+    Returns
+    -------
+    k_hat : int    — optimal n_estimators value
+    acc   : float  — cross-validated accuracy at k_hat
+    """
+    assert window_size >= 3, "window_size must be ≥ 3 (Assumption 2)"
+    assert k_min < k_max
+
+    oracle = _WarmStartOracle(X, y, cv_folds=cv_folds, random_state=random_state)
+    acc_seq: List[float] = []
+
+    def _eval(k: int) -> float:
+        a = oracle(k)
+        acc_seq.append(a)
+        return a
+
+    # ------------------------------------------------------------------
+    # Phase 1 — Exponential Bracketing
+    # Evaluate k_min, k_min*2, k_min*4, … until Ḡ_w < ε (plateau onset)
+    # ------------------------------------------------------------------
+    k_cur  = k_min
+    acc_cur = _eval(k_cur)
+    L, U   = k_min, k_max
+    found  = False
+
+    for i in range(math.ceil(math.log2(k_max / k_min)) + 1):
+        k_next   = min(k_min * (2 ** (i + 1)), k_max)
+        _eval(k_next)
+        g = _windowed_gradient(acc_seq, window_size)
+        if g is not None and g < epsilon:
+            L, U  = k_cur, k_next
+            found = True
+            break
+        k_cur = k_next
+        if k_next == k_max:
+            break
+
+    if not found:
+        L, U = k_min, k_max
+
+    # ------------------------------------------------------------------
+    # Phase 2 — Binary Refinement on [L, U]
+    # Compare acc(k_mid) against the plateau level (max seen so far).
+    # k_mid is epsilon-optimal if max_acc - acc_mid ≤ ε  →  U = k_mid
+    # k_mid is below plateau                              →  L = k_mid
+    # ------------------------------------------------------------------
+    max_acc = max(acc_seq)
+
+    while U - L > 1:
+        k_mid   = (L + U) // 2
+        acc_mid = _eval(k_mid)
+        max_acc = max(max_acc, acc_mid)
+        if max_acc - acc_mid <= epsilon:
+            U = k_mid
+        else:
+            L = k_mid
+
+    k_hat = U
+    best_acc = oracle(k_hat)   # one final eval at the chosen k (uses warm cache)
+    return k_hat, best_acc
+
+
+# ---------------------------------------------------------------------------
+# Quick self-test — run with: python this_file.py
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    from sklearn.datasets import load_iris, load_breast_cancer
+
+    for name, loader in [("Iris", load_iris), ("Breast Cancer", load_breast_cancer)]:
+        X, y = loader(return_X_y=True)
+        k, acc = find_optimal_n_estimators(X, y, k_max=200)
+        print(f"{name:>15}: n_estimators={k:>4}  CV acc={acc:.4f}")
+Key integration notes:
+
+Drop-in replacement for GridSearchCV on n_estimators — same inputs, roughly 18 evaluations instead of 100+.
+window_size=5 is the ablation-validated default. Use w=3 only if eval speed is critical (saves ~2 evals, raises false-positive rate for wide plateaus).
+epsilon=1e-3 is the plateau threshold. Tighten to 5e-4 on noisy datasets; loosen to 2e-3 for small datasets where CV variance is high.
+The returned k_hat can be passed directly to RandomForestClassifier(n_estimators=k_hat).
